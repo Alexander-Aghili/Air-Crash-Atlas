@@ -1,0 +1,238 @@
+[
+  {
+    "type": "Feature",
+    "id": "529bdc8c9bc00f19e612",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -80.3102639,
+        40.6039278
+      ]
+    },
+    "properties": {
+      "event_id": "529bdc8c9bc00f19e612",
+      "name": "USAir Flight 427",
+      "title": "USAir Flight 427",
+      "date": "1994-09-08",
+      "date_precision": "day",
+      "event_type": "crash",
+      "civil_or_military": "civil",
+      "aircraft": [
+        {
+          "type": "Boeing 737-300",
+          "registration": "N513AU",
+          "operator": ""
+        }
+      ],
+      "state": "United States",
+      "location_text": "Hopewell Township, Pennsylvania",
+      "location_kind": "impact site",
+      "location_quality": "source supplied",
+      "uncertainty": null,
+      "evidence": {
+        "method": "Event article Site field coordinates; not independently verified"
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/USAir_Flight_427",
+          "title": "USAir Flight 427",
+          "kind": "Wikipedia",
+          "revision": 1363402597,
+          "retrieved_at": "2026-10-02T18:00:00Z"
+        }
+      ],
+      "source_url": "https://en.wikipedia.org/wiki/USAir_Flight_427",
+      "source_locator": "",
+      "description": "",
+      "media": []
+    }
+  },
+  {
+    "type": "Feature",
+    "id": "2664b69197405833b25c",
+    "geometry": null,
+    "properties": {
+      "event_id": "2664b69197405833b25c",
+      "name": "1956 Grand Canyon mid-air collision",
+      "title": "1956 Grand Canyon mid-air collision",
+      "date": "1956-06-30",
+      "date_precision": "day",
+      "event_type": "collision",
+      "civil_or_military": "civil",
+      "aircraft": [
+        {
+          "type": "Douglas DC-7",
+          "registration": "N6324C",
+          "operator": "United Airlines"
+        },
+        {
+          "type": "Lockheed L-1049",
+          "registration": "N6902C",
+          "operator": "TWA"
+        }
+      ],
+      "state": "United States",
+      "location_text": "Grand Canyon, Arizona",
+      "location_kind": "unknown",
+      "location_quality": "missing",
+      "uncertainty": null,
+      "evidence": {
+        "method": "Historic-site center is not used as an impact point. Resolve separately documented wreck sites through location_sources."
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/1956_Grand_Canyon_mid-air_collision",
+          "title": "1956 Grand Canyon mid-air collision",
+          "kind": "Wikipedia",
+          "revision": null,
+          "retrieved_at": null
+        }
+      ],
+      "source_url": "https://en.wikipedia.org/wiki/1956_Grand_Canyon_mid-air_collision",
+      "source_locator": "",
+      "description": "",
+      "media": [],
+      "override_location": true,
+      "location_sources": [
+        {
+          "provider": "OpenStreetMap",
+          "node_id": 5907460257,
+          "registration": "N6902C"
+        },
+        {
+          "provider": "OpenStreetMap",
+          "node_id": 5907460258,
+          "registration": "N6324C"
+        }
+      ]
+    }
+  },
+  {
+    "type": "Feature",
+    "id": "789bbdae5d42bde2fdee",
+    "geometry": null,
+    "properties": {
+      "event_id": "789bbdae5d42bde2fdee",
+      "name": "Malaysia Airlines Flight 370",
+      "title": "Malaysia Airlines Flight 370",
+      "date": "2014-03-08",
+      "date_precision": "day",
+      "event_type": "disappearance",
+      "civil_or_military": "civil",
+      "aircraft": [
+        {
+          "type": "Boeing 777-200ER",
+          "registration": "9M-MRO",
+          "operator": ""
+        }
+      ],
+      "state": "Unknown",
+      "location_text": "Southern Indian Ocean; impact site unknown",
+      "location_kind": "unknown",
+      "location_quality": "missing",
+      "uncertainty": null,
+      "evidence": {
+        "method": "No event-specific impact coordinates established"
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Malaysia_Airlines_Flight_370",
+          "title": "Malaysia Airlines Flight 370",
+          "kind": "Wikipedia",
+          "revision": null,
+          "retrieved_at": null
+        }
+      ],
+      "source_url": "https://en.wikipedia.org/wiki/Malaysia_Airlines_Flight_370",
+      "source_locator": "",
+      "description": "",
+      "media": [],
+      "override_location": true
+    }
+  },
+  {
+    "type": "Feature",
+    "id": "a636a998f8040c9a5b98",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -122.620288,
+        37.99427
+      ]
+    },
+    "properties": {
+      "event_id": "a636a998f8040c9a5b98",
+      "name": "Fairfax, California B-17 crash",
+      "title": "Fairfax, California B-17 crash",
+      "date": "1946-05-16",
+      "date_precision": "day",
+      "event_type": "crash",
+      "civil_or_military": "military",
+      "aircraft": [
+        {
+          "type": "B-17G-95-VE",
+          "registration": "44-85510",
+          "operator": ""
+        }
+      ],
+      "state": "United States",
+      "location_text": "White Hill crash site, west of Tamarancho Camp, near Fairfax, California",
+      "location_kind": "impact site",
+      "location_quality": "approximate",
+      "uncertainty": {
+        "description": "Digitized from a crash-site symbol on a historical USGS map. Datum conversion and a quantified positional error are not documented."
+      },
+      "evidence": {
+        "method": "Impact-site marker inspected on the annotated USGS map reproduced in the crash article. Coordinates are the event-specific Wikidata P625 value, whose reference explicitly derives this marked crash point. Approximate because the digitization and historical datum conversion are not documented.",
+        "source_url": "https://www.wikidata.org/wiki/Q16820731#P625",
+        "supporting_map": "https://en.wikipedia.org/wiki/File:B-17-crash-site.jpg",
+        "retrieved_at": "2026-10-02T18:25:00Z"
+      },
+      "sources": [
+        {
+          "url": "https://en.wikipedia.org/wiki/Fairfax,_California_B-17_crash",
+          "title": "Fairfax, California B-17 crash",
+          "kind": "Wikipedia",
+          "revision": null,
+          "retrieved_at": null
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/List_of_accidents_and_incidents_involving_military_aircraft_(1945%E2%80%931949)#April%E2%80%93June_1946",
+          "title": "Military aircraft accidents 1945\u20131949, 1946 section",
+          "kind": "Wikipedia",
+          "revision": 1377660059
+        },
+        {
+          "url": "https://www.check-six.com/Crash_Sites/Marin_B-17_crash.htm",
+          "title": "B-17 44-85510 historical account",
+          "kind": "Historical source"
+        },
+        {
+          "url": "https://www.wikidata.org/wiki/Q16820731#P625",
+          "kind": "Crash-site coordinate derivation",
+          "title": "Fairfax B-17 impact point"
+        },
+        {
+          "url": "https://fr.wikipedia.org/wiki/Discussion_utilisateur:Noritop#Petit_calcul",
+          "kind": "Coordinate derivation",
+          "title": "Digitization of the marked crash point, January 2021"
+        }
+      ],
+      "source_url": "https://en.wikipedia.org/wiki/Fairfax,_California_B-17_crash",
+      "source_locator": "16 May 1946 \u00b7 44-85510",
+      "description": "",
+      "media": [],
+      "override_location": true,
+      "review_status": "source map inspected",
+      "images": [
+        {
+          "url": "https://en.wikipedia.org/wiki/File:B-17-crash-site.jpg",
+          "thumbnail": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c4/B-17-crash-site.jpg/960px-B-17-crash-site.jpg",
+          "caption": "The B-17 impact site marked on a historical USGS topographic map.",
+          "kind": "crash-site map",
+          "source_url": "https://en.wikipedia.org/wiki/Fairfax,_California_B-17_crash"
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#152633">
+<meta name="description" content="A map of plane crashes with Wikipedia links, images, and source information.">
+<title>Aviation Crash Atlas</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"><link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"><link rel="stylesheet" href="style.css">
+<script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script defer src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script><script type="module" src="app.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#search">Skip to search</a>
+<header class="masthead">
+<a href="./" class="brand" aria-label="Aviation Crash Atlas home"><span class="wordmark">Aviation Crash Atlas</span></a>
+
+<button id="about" class="quiet-button">About this map <span aria-hidden="true">↗</span></button>
+</header>
+<main>
+<aside id="sidebar" aria-label="Crash search">
+<div class="sidebar-top">
+
+<h1>Plane crashes</h1>
+<p class="intro">Plane crash records with Wikipedia links and images. Only records with sourced crash-site coordinates have markers. Others are in All records.</p>
+<div class="catalog-stats"><div><strong id="mapped-stat">—</strong><span>mapped crashes</span></div><div><strong id="total-stat">—</strong><span>records</span></div></div>
+<div class="archive-tabs" role="group" aria-label="Records shown"><button id="scope-sites" aria-pressed="true">Mapped crashes</button><button id="scope-all" aria-pressed="false">All records</button></div>
+<label for="search" class="sr">Find a crash</label><div class="search-wrap"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Flight, aircraft, place, or serial…" autocomplete="off"><kbd aria-hidden="true">/</kbd></div>
+<div class="filters"><div class="country-filter"><label for="state">COUNTRY / AREA</label><select id="state"><option value="">All countries</option></select></div><div><label for="year-from">FROM YEAR</label><input id="year-from" type="number" min="1800" max="2100" placeholder="Any"></div><div><label for="year-to">TO YEAR</label><input id="year-to" type="number" min="1800" max="2100" placeholder="Any"></div></div>
+<div class="encoding-controls">
+<div><label for="color-by">COLOR BY</label><select id="color-by"><option value="fatalities">Fatalities</option><option value="year">Year</option><option value="none">None</option></select></div>
+<details id="decade-picker" class="decade-picker"><summary id="decade-summary">All decades</summary><div class="decade-menu"><div class="decade-actions"><button id="decades-all" type="button">Enable all</button><button id="decades-none" type="button">Disable all</button></div><div id="decade-options" role="group" aria-label="Enabled decades"></div></div></details>
+</div>
+<details id="advanced"><summary>More filters <span aria-hidden="true">+</span></summary><div class="extra-filters">
+<div><label for="category">AVIATION</label><select id="category"><option value="">Civil & military</option><option value="civil">Civil</option><option value="military">Military</option></select></div>
+<div><label for="event-type">EVENT</label><select id="event-type"><option value="">All event types</option><option>crash</option><option>collision</option><option>disappearance</option><option>ground incident</option><option>incident</option><option>combat loss</option></select></div>
+<div><label for="quality">COORDINATES</label><select id="quality"><option value="">Any</option><option value="source supplied">From Wikipedia</option><option value="approximate">Approximate crash site</option><option value="reviewed">Reviewed</option><option value="missing">Without coordinates</option></select></div>
+<div><label for="aircraft">AIRCRAFT</label><input id="aircraft" placeholder="B-17, Boeing 747…"></div>
+<div><label for="aircraft-group">AIRCRAFT TYPE / SIZE</label><select id="aircraft-group"><option value="">All types</option></select></div>
+<div><label for="media">IMAGES & VIDEO</label><select id="media"><option value="">Any</option><option value="images">With images</option><option value="any">With video or episode</option><option value="video">Video</option><option value="episode">Documentary episode</option></select></div>
+</div></details>
+<div class="filter-options"><label class="check"><input id="in-view" type="checkbox"> This map view</label><button id="reset" class="text-button">Reset</button></div>
+</div>
+<div class="results-heading"><p id="status" role="status">Loading records…</p><button id="toggle-results" class="text-button" aria-expanded="true" aria-controls="result-scroll">Hide list</button></div>
+<div id="result-scroll"><ul id="results" aria-label="Crash search results"></ul><button id="more" hidden>Load more records</button></div>
+<footer class="sidebar-credit"><span>SOURCE: WIKIPEDIA</span><small id="refresh">Loading…</small></footer>
+</aside>
+<section class="map-area" aria-label="Crash impact locations map">
+<div id="map"></div>
+<div class="map-top"><div class="layer-switch" role="group" aria-label="Basemap"><button id="street" aria-pressed="true">Map</button><button id="satellite" aria-pressed="false">Satellite</button></div></div>
+<div class="map-right-tools"><select id="view" aria-label="Jump to region"><option value="world">Worldwide</option><option value="us">United States</option><option value="europe">Europe</option><option value="asia">Asia</option><option value="all">Fit matching sites</option></select><button id="fit" title="Fit matching crash sites" aria-label="Fit matching crash sites">⛶</button></div>
+<div id="map-error" role="alert" hidden><span id="map-error-text"></span><button id="dismiss-error" aria-label="Dismiss map message">×</button></div>
+<div class="map-bottom"><div class="legend appearance-legend"><strong id="color-key-title">Fatalities</strong><div id="color-key" class="color-key"></div><small>Clusters show site counts.</small></div><div id="map-location" aria-hidden="true" hidden>20.00° N / 0.00° E</div></div>
+</section>
+</main>
+<dialog id="detail-dialog" aria-label="Crash record"><button id="close-detail" class="close-dialog" aria-label="Close crash record">×</button><div id="detail-content"></div></dialog>
+<dialog id="about-dialog" aria-labelledby="about-title"><button id="close-about" class="close-dialog" aria-label="Close about">×</button><h2 id="about-title">About this map</h2><p>We collect plane crash records from Wikipedia and link to their articles and available images.</p><h3>Why some records have markers</h3><p>A marker requires coordinates for the crash site. We use an accident article’s Site field or a separately sourced location. Nearby towns, departure airports, memorials, and last-known positions are not used as substitutes. Dashed marker outlines indicate approximate crash sites.</p><p>Records without crash-site coordinates are available in All records. Incidents and disappearances may have no crash site to map. The dataset is incomplete, especially for military crashes and older records.</p><p>Use custom years and the decade dropdown together to filter dates. Marker color can show fatalities, year, or a single color. Unrecorded or ambiguous fatality counts are gray; colors use the event’s reported total, not a separate count for each aircraft.</p><p id="coverage"></p><p>Images may show the aircraft, crash site, or aftermath. Their file pages provide credits and licenses. Separately sourced OpenStreetMap wreck-site coordinates are approximate and reused under <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">ODbL</a>. Wikipedia text is reused under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>.</p><p><a href="https://github.com/wiedehopf/tar1090" target="_blank" rel="noopener noreferrer">Aircraft icon credits</a> · <a href="vendor/tar1090-LICENSE.txt" target="_blank" rel="noopener noreferrer">Icon license</a></p><p><a href="data/coverage.json" target="_blank" rel="noopener noreferrer">Data coverage report ↗</a></p></dialog>
+</body>
+</html>
