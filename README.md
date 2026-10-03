@@ -26,7 +26,7 @@ Published files are `web/data/events.geojson`, `events.json`, and `coverage.json
 
 Coordinates are extracted only from an event infobox's Site field, never from arbitrary article coordinates, origin or destination airports, nearby towns, or memorials. Disappearances and last-known or presumed locations remain unresolved. Multiple Site coordinates remain attached to one collision record and appear as multiple map markers. Source-supplied coordinates are labeled as article impact coordinates; they have not all been independently surveyed. Approximate reviewed sites receive dashed outlines and an uncertainty explanation.
 
-The Fairfax B-17 crash (44-85510, 16 May 1946) uses an approximate point digitized from the annotated historical crash-site map. Its record links the image, Wikidata coordinate, and original derivation. The map datum conversion is undocumented, so the point is explicitly approximate. MH370 retains no impact point. Reviewed records in `pipeline/reviewed.json` preserve deliberate location overrides across refreshes.
+Event details come from Wikipedia lists and accident articles. No manually reviewed records, date overrides, previous published records, or external wreck-site coordinates are injected. Article records retain raw infobox text alongside normalized fields. Discovery follows linked aviation accident lists recursively, starting with the two military and commercial accident lists. This does not guarantee every Wikipedia crash is discovered or parsed.
 
 The archive is still incomplete: list-only events require further location evidence, unsupported list layouts need review, and automatic event and country classification remains provisional. Completing the discovered article pass does not imply complete worldwide coverage. No coordinates are invented to increase marker counts.
 
@@ -34,7 +34,7 @@ The archive is still incomplete: list-only events require further location evide
 
 Images come from accident articles and Wikipedia PageImages metadata. They may depict the aircraft, aftermath, or site maps, as indicated by captions. Cards link directly to Wikipedia and available image file pages; detail panels show images and provenance. Wikimedia file pages provide authors and individual licenses. Wikipedia text is reused under CC BY-SA 4.0; revision IDs and retrieval dates are retained.
 
-Mayday matches require an episode row linking the event article. Media links are informational, not promises of streaming availability. Independently verified historical sources, reports, and videos can be added to reviewed records.
+Mayday matches require an episode row linking the event article. Media links are informational, not promises of streaming availability. No hand-authored event records are injected during refresh.
 
 ## Checks
 
@@ -63,3 +63,11 @@ These are inferred illustrations, not historical transmitted emitter categories 
 exact mass/dimension measurements. No crash-data edits or additional update command
 are needed: newly extracted aircraft names and fatalities use the same renderer.
 
+
+Commercial and Military switches independently control both the map and record list. Both start enabled; saved URLs retain disabled groups, and Reset enables both. Commercial corresponds to records classified as civil in the archive.
+
+## Source-entry audit
+
+Every publication runs a source-entry audit against its cached source snapshots. Run `python3 -m pipeline.audit` to fetch unavailable source pages and audit again (or `--offline` to stay in cache). Use `--repair` to extract supported entries missing an exact provenance link; new dedicated articles can then be enriched with `python3 -m pipeline.enrich`. Open `web/data/audit.html` for the readable report; `audit.json` retains every candidate entry, its raw text, source revision, matching event IDs, and unresolved reason. The audit walks from the two source roots independently of extraction and only certifies matches through exact source-entry provenance. It flags disagreement between source-entry dates and record dates, and reports unavailable article enrichment separately. Related accident links are retained as related links and never used to merge two event identities. Missing coordinates are counted separately from missing records. Unavailable pages, unrecognized layouts, and compound narratives remain explicit gaps. A matching overall record count does not certify coverage.
+
+The supplemental parser handles full dates in definition lists, narrative paragraphs, nested loss bullets, date-column aliases, multirow table headings, and inherited table cells. Month-only dates retain month precision. The original source text remains attached through duplicate merging; article operator evidence takes priority over shallow list classification.

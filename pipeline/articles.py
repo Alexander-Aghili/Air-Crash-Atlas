@@ -5,13 +5,6 @@ from datetime import datetime
 from urllib.parse import unquote, urljoin
 from bs4 import BeautifulSoup
 
-SEPTEMBER_11_FLIGHTS = {
-    "American Airlines Flight 11",
-    "American Airlines Flight 77",
-    "United Airlines Flight 175",
-    "United Airlines Flight 93",
-}
-
 COUNTRIES = [
     "United States",
     "United Kingdom",
@@ -66,9 +59,11 @@ def extract_date(node):
         found = re.search(pattern, text)
         if found:
             try:
-                return datetime.strptime(found[1].replace(",", ""), fmt).strftime(
-                    "%Y-%m-%d"
-                )
+                for date_format in [fmt, fmt.replace("%B", "%b")]:
+                    try:
+                        return datetime.strptime(found[1].replace(",", ""), date_format).strftime("%Y-%m-%d")
+                    except ValueError:
+                        continue
             except ValueError:
                 pass
     return None
@@ -162,6 +157,7 @@ def article(html, title, source, fallback_date=None):
         None,
     )
     fields = {}
+    raw_fields = {}
     aircraft = []
     aircraft_context = False
     if box:
@@ -177,6 +173,7 @@ def article(html, title, source, fallback_date=None):
                 continue
             key = h.get_text(" ", strip=True).lower().replace("\xa0", " ")
             fields.setdefault(key, td)
+            raw_fields.setdefault(key, []).append(td.get_text(" ", strip=True))
             value = td.get_text(" ", strip=True)
             if key in ["aircraft type", "aircraft"] or (
                 key == "type" and aircraft_context
@@ -184,33 +181,24 @@ def article(html, title, source, fallback_date=None):
                 aircraft.append({"type": value, "registration": "", "operator": ""})
             elif aircraft and key in ["registration", "operator"]:
                 aircraft[-1][key] = value
-    date = extract_date(fields.get("date")) or fallback_date
-    if title.replace("_", " ") == "Fairfax, California B-17 crash":
-        date = "1946-05-16"
-    if not date:
-        return None
     summary = fields.get("summary")
     summary_text = summary.get_text(" ", strip=True) if summary else ""
     body = soup.select_one(".mw-parser-output") or soup
     lead = next(
         (
             p.get_text(" ", strip=True)
-            for p in body.find_all("p", recursive=False)
-            if len(p.get_text(" ", strip=True)) > 60
+            for p in body.find_all("p")
+            if not p.find_parent(["table", "li"]) and len(p.get_text(" ", strip=True)) > 60
         ),
         "",
     )
-    category = (
-        "military"
-        if re.search(
-            r"air force|navy|army|military|\bRAF\b|\bUSAF\b",
-            " ".join(n.get_text(" ", strip=True) for n in fields.values())
-            + " "
-            + " ".join(a.get("operator", "") for a in aircraft),
-            re.I,
-        )
-        else "civil"
-    )
+    from pipeline.source_entries import date_text
+    date = extract_date(fields.get("date")) or date_text(lead) or fallback_date
+    if not date:
+        return None
+    operators = " ".join(a.get("operator", "") for a in aircraft)
+    category_text = operators or lead
+    category = "military" if re.search(r"air force|navy|army|military|\bRAF\b|\bUSAF\b", category_text, re.I) else "civil"
     r = event(
         title.replace("_", " "),
         date,
@@ -221,12 +209,17 @@ def article(html, title, source, fallback_date=None):
     )
     p = r["properties"]
     p["description"] = summary_text or lead
+    p["category_evidence"] = {"method": "article operator" if operators else "article opening paragraph", "text": category_text, "priority": 3 if operators else (2 if category == "military" or re.search(r"commercial|civilian|airliner|passenger flight", lead, re.I) else 0)}
+    p["raw_infobox"] = {key: values[0] if len(values) == 1 else values for key, values in raw_fields.items()}
+    p["date_original"] = fields["date"].get_text(" ", strip=True) if fields.get("date") else (lead if date_text(lead) else fallback_date)
     impact_text = title.replace("_", " ") + " " + summary_text
     impact = re.search(
-        r"crash|colli(?:sion|ded)|ditching|overr(?:an|un)|hard landing|undershot|overshot|runway excursion|controlled flight into|break.?up|(?:mid[ -]air|in[ -]flight) disintegration|shot down|shootdown",
+        r"in[ -]flight explosion|suicide hijacking|crash|colli(?:sion|ded)|ditching|overr(?:an|un)|hard landing|undershot|overshot|runway excursion|controlled flight into|break.?up|(?:mid[ -]air|in[ -]flight) disintegration|shot down|shootdown",
         impact_text,
         re.I,
     )
+    if not impact and re.search(r"hijack", summary_text, re.I):
+        impact = re.search(r"crashed|crash(?:ed)? into|flown into|flew into|collided with|suicide", lead, re.I)
     near_miss = re.search(
         r"near[ -](?:crash|miss|collision)|narrowly (?:avoided|missed)",
         impact_text,
@@ -239,7 +232,7 @@ def article(html, title, source, fallback_date=None):
     )
     if near_miss or (non_impact and not impact):
         p["event_type"] = "incident"
-    elif impact and p["event_type"] == "incident":
+    elif impact and p["event_type"] in ["incident", "disappearance"]:
         p["event_type"] = "crash"
     fatalities_text = (
         fields.get("fatalities").get_text(" ", strip=True)
@@ -255,29 +248,10 @@ def article(html, title, source, fallback_date=None):
         and not re.search(r"crashed|crash-landed|ditched|collided|overran", lead, re.I)
     ):
         p["event_type"] = "incident"
-    if date == "2001-09-11" and title.replace("_", " ") in SEPTEMBER_11_FLIGHTS:
-        p["event_type"] = "crash"
-        p["search_aliases"] = [
-            "9/11",
-            "9-11",
-            "911",
-            "September 11",
-            "September 11 attacks",
-            (
-                "World Trade Center"
-                if "Flight 11" in title.replace("_", " ")
-                or "Flight 175" in title.replace("_", " ")
-                else (
-                    "Pentagon"
-                    if "Flight 77" in title.replace("_", " ")
-                    else "Shanksville"
-                )
-            ),
-        ]
     p["images"] = extract_images(soup, box, source)
     p["article_titles"] = [title]
     p["article_url"] = source["url"]
-    p["date_precision"] = "day" if len(date) == 10 else "year"
+    p["date_precision"] = "day" if len(date) == 10 else "month" if len(date) == 7 else "year"
     for name in ["fatalities", "occupants", "survivors"]:
         field = fields.get("total " + name) or fields.get(name)
         if field:

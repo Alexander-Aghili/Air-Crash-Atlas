@@ -9,27 +9,28 @@ from bs4 import BeautifulSoup
 
 ROOT = Path(__file__).resolve().parents[1]
 INDEX = "List_of_accidents_and_incidents_involving_military_aircraft"
-REQUIRED = INDEX + "_(1945–1949)"
 SEEDS = [
     INDEX,
-    REQUIRED,
-    "List_of_accidents_and_incidents_involving_airliners_by_location",
-    "List_of_Mayday_episodes",
+    "List_of_accidents_and_incidents_involving_commercial_aircraft",
 ]
-PILOT = [
-    "Tenerife_airport_disaster",
-    "USAir_Flight_427",
-    "Fairfax,_California_B-17_crash",
-    "Malaysia_Airlines_Flight_370",
-    "1956_Grand_Canyon_mid-air_collision",
-]
+
+
+def is_accident_list(title):
+    """Select aviation lists, including aircraft-model and air-show sublists."""
+    lower = title.lower()
+    return title.startswith("List_") and bool(
+        re.search(r"accident|incident|crash|losses|shootdown", lower)
+        and re.search(r"aircraft|airliner|airline|aviation|flight|helicopter|aerial|air_show|air_force|military|boeing|airbus|douglas|lockheed|harrier|lightning|(?:^|_)[fbc]-\d", lower)
+    )
+
+
 STAMP = lambda: datetime.now(timezone.utc).isoformat()
 URL = lambda title: "https://en.wikipedia.org/wiki/" + quote(
     title.replace(" ", "_"), safe="_,()"
 )
 
 
-def event(title, date, text, source, locator="", category="military", aircraft=None):
+def event(title, date, text, source, locator="", category="civil", aircraft=None):
     identity = (
         date
         + "|"
@@ -38,6 +39,8 @@ def event(title, date, text, source, locator="", category="military", aircraft=N
         + "|".join(sorted(a.get("registration", "") for a in (aircraft or [])))
     )
     eid = hashlib.sha256(identity.encode()).hexdigest()[:20]
+    from pipeline.source_entries import source_entry
+    source_entries = [source_entry(source, text)] if unquote(source["url"]).split("/wiki/")[-1].startswith("List_") else []
     lower = (title + " " + text).lower()
     # Type classification is provisional until reviewed.
 
@@ -70,7 +73,7 @@ def event(title, date, text, source, locator="", category="military", aircraft=N
             "name": title,
             "title": title,
             "date": date,
-            "date_precision": "day" if len(date) == 10 else "year",
+            "date_precision": "day" if len(date) == 10 else "month" if len(date) == 7 else "year",
             "event_type": kind,
             "civil_or_military": category,
             "aircraft": aircraft or [],
@@ -81,6 +84,8 @@ def event(title, date, text, source, locator="", category="military", aircraft=N
             "uncertainty": None,
             "evidence": {"method": "No event-specific impact coordinates established"},
             "sources": [source],
+            "source_entries": source_entries,
+            "category_evidence": {"method": "source list context", "priority": 1},
             "source_url": source["url"],
             "source_locator": locator,
             "description": text,
@@ -133,13 +138,12 @@ def parse_list(html, title, source):
                 section = anchor
         elif node.name == "dt":
             pending_date = text
-        elif node.name == "dd" and year and pending_date and len(text) > 40:
-            try:
-                date = datetime.strptime(f"{pending_date} {year}", "%d %B %Y").strftime(
-                    "%Y-%m-%d"
-                )
-            except ValueError:
-                date = year
+        elif node.name == "dd" and pending_date and len(text) > 40:
+            from pipeline.source_entries import date_text
+            date = date_text(pending_date, year)
+            if not date:
+                continue
+            raw_date = pending_date + (" " + year if year and not re.search(r"\b(?:18|19|20)\d{2}\b", pending_date) else "")
             serials = re.findall(r"\b\d{2}-\d{4,6}\b", text)
             types = [
                 a.get_text(" ", strip=True)
@@ -170,7 +174,8 @@ def parse_list(html, title, source):
             links = [
                 unquote(a["href"].split("/wiki/", 1)[1]).split("#")[0]
                 for a in node.select('a[href^="/wiki/"]')
-                if re.search(
+                if ":" not in unquote(a["href"].split("/wiki/", 1)[1]).split("#")[0]
+                and re.search(
                     r"(Flight_\d|crash|disaster|collision|shootdown|accident)",
                     a["href"],
                     re.I,
@@ -183,7 +188,7 @@ def parse_list(html, title, source):
             name = (
                 links[0].replace("_", " ")
                 if links
-                else f"{pending_date} {year} · "
+                else f"{raw_date} · "
                 + (" / ".join(serials) if serials else text[:85])
             )
             record = event(
@@ -191,13 +196,15 @@ def parse_list(html, title, source):
                 date,
                 text,
                 link,
-                f"{pending_date} {year}; " + ", ".join(serials),
+                raw_date + "; " + ", ".join(serials),
                 aircraft=aircraft,
+                category="military" if "military" in title.lower() else "civil",
             )
-            record["properties"]["article_titles"] = links
+            record["properties"]["article_titles"] = links[:1]
+            record["properties"]["related_article_titles"] = links[1:]
             record["properties"]["location_text"] = text
             record["properties"]["location_evidence_pending"] = True
-            record["properties"]["date_original"] = pending_date + " " + year
+            record["properties"]["date_original"] = raw_date
             record["properties"]["sources"].extend(references(node, soup))
             records.append(record)
     return records
@@ -231,7 +238,8 @@ def parse_civil(html, title, source):
         links = [
             unquote(a["href"].split("/wiki/", 1)[1]).split("#")[0]
             for a in node.select('a[href^="/wiki/"]')
-            if re.search(
+            if ":" not in unquote(a["href"].split("/wiki/", 1)[1]).split("#")[0]
+            and re.search(
                 r"(Flight_\d|crash|disaster|collision|shootdown|accident)",
                 a["href"],
                 re.I,
@@ -272,7 +280,8 @@ def parse_civil(html, title, source):
             category="civil",
         )
         r["properties"].update(
-            article_titles=links,
+            article_titles=links[:1],
+            related_article_titles=links[1:],
             state=country,
             location_text=text,
             source_locator=text[:120],
@@ -321,7 +330,8 @@ def reconcile(records):
         if not existing:
             year = p["date"][:4]
             candidates = [
-                by_source.get((year, URL(t))) for t in p.get("article_titles", [])
+                by_source.get((year, URL(t))) or by_article.get((year, URL(t)))
+                for t in p.get("article_titles", [])
             ]
             candidates.append(by_article.get((year, p["source_url"].split("#")[0])))
             existing = next((r for r in candidates if r is not None), None)
@@ -337,8 +347,14 @@ def reconcile(records):
                             same[field] = source[field]
                 else:
                     ep["sources"].append(source)
-            if p["civil_or_military"] == "military":
-                ep["civil_or_military"] = "military"
+            candidate_priority = p.get("category_evidence", {}).get("priority", 0)
+            existing_priority = ep.get("category_evidence", {}).get("priority", 0)
+            if candidate_priority > existing_priority or (candidate_priority == existing_priority <= 1 and p["civil_or_military"] == "military"):
+                ep["civil_or_military"] = p["civil_or_military"]
+                ep["category_evidence"] = p["category_evidence"]
+            entry_ids = {entry["entry_id"] for entry in ep.get("source_entries", [])}
+            ep.setdefault("source_entries", []).extend(entry for entry in p.get("source_entries", []) if entry["entry_id"] not in entry_ids)
+            ep["article_titles"] = list(dict.fromkeys(ep.get("article_titles", []) + p.get("article_titles", [])))
             if ep["state"] == "Unknown" and p["state"] != "Unknown":
                 ep["state"] = p["state"]
             if not ep["description"]:
@@ -466,15 +482,15 @@ def main(argv=None):
             if t.startswith("List_")
         ]
     try:
-        fetcher.prime(SEEDS + PILOT + known_lists)
+        fetcher.prime(SEEDS + known_lists)
     except Exception as exc:
         print(
             f"Revision check unavailable: {exc}; continuing with cached sources",
             flush=True,
         )
     inventory = {
-        t: {"status": "pending", "family": "pilot" if t in PILOT else "discovery"}
-        for t in SEEDS + PILOT
+        t: {"status": "pending", "family": "discovery"}
+        for t in SEEDS
     }
     queue = list(inventory)
     records = []
@@ -500,30 +516,29 @@ def main(argv=None):
                 "revision": data["revision"],
                 "retrieved_at": data["retrieved_at"],
             }
-            if title in PILOT or not title.startswith("List_"):
+            if not title.startswith("List_"):
                 item = article(data["html"], title, source)
                 items = [item] if item else []
-            elif "airliners_by_location" in title or "commercial_aircraft" in title:
-                items = parse_civil(data["html"], title, source)
             else:
                 from pipeline.lists import parse_flexible
 
                 items = parse_list(data["html"], title, source) + parse_flexible(
                     data["html"], title, source
                 )
+                if "airliner" in title or "commercial" in title:
+                    items += parse_civil(data["html"], title, source)
+            from pipeline.source_entries import parse_unusual
+            if title.startswith("List_"):
+                items += parse_unusual(data["html"], title, source, items)
             records.extend(items)
             soup = BeautifulSoup(data["html"], "lxml")
             for a in soup.select('a[href^="/wiki/"]'):
                 linked = unquote(a["href"].split("/wiki/", 1)[1]).split("#")[0]
-                discover = (title == INDEX and linked.startswith(INDEX + "_(")) or (
-                    title == INDEX
-                    and linked.startswith("List_")
-                    and any(w in linked.lower() for w in ["accident", "losses"])
-                )
+                discover = is_accident_list(linked)
                 if discover and linked not in inventory:
                     inventory[linked] = {
                         "status": "pending",
-                        "family": "military lists",
+                        "family": "aviation lists",
                     }
                     queue.append(linked)
             for item in items:
@@ -545,18 +560,12 @@ def main(argv=None):
                 error=str(exc),
             )
     records = reconcile(records)
-    # Reviewed records survive refresh and provide explicit overrides, including null geometry.
-    overrides = json.loads((ROOT / "pipeline/reviewed.json").read_text())
-    records = reconcile(overrides + records)
     try:
         episode_data = fetcher.fetch("List_of_Mayday_episodes")
         match_episodes(records, episode_data)
-        inventory["List_of_Mayday_episodes"]["status"] = "parsed"
+        inventory["List_of_Mayday_episodes"] = {"status": "parsed", "family": "episode metadata"}
     except RuntimeError:
         pass
-    previous = ROOT / "web/data/events.geojson"
-    if previous.exists():
-        records = reconcile(records + json.loads(previous.read_text())["features"])
     report = {
         "sources": inventory,
         "extracted": sum(s.get("events", 0) for s in inventory.values()),

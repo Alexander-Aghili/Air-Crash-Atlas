@@ -35,7 +35,8 @@ def parse_flexible(html, title, source):
         links = [
             unquote(a["href"][6:]).split("#")[0]
             for a in node.select('a[href^="/wiki/"]')
-            if re.search(
+            if ":" not in unquote(a["href"][6:]).split("#")[0]
+            and re.search(
                 r"crash|disaster|collision|shootdown|accident|Flight_\d",
                 a["href"],
                 re.I,
@@ -102,7 +103,7 @@ def parse_flexible(html, title, source):
             name, date, text, link, text[:180], category=category, aircraft=aircraft
         )
         row["properties"].update(
-            article_titles=links, location_text=text, location_evidence_pending=True
+            article_titles=links[:1], related_article_titles=links[1:], location_text=text, location_evidence_pending=True
         )
         row["properties"]["sources"].extend(references(node, soup))
         records.append(row)

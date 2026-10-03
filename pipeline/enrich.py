@@ -15,7 +15,7 @@ from pipeline.extract import (
     match_episodes,
     parse_civil,
 )
-from pipeline.articles import article, SEPTEMBER_11_FLIGHTS
+from pipeline.articles import article
 from pipeline.validate import validate
 
 
@@ -105,15 +105,19 @@ class Wikimedia:
             raise RuntimeError("Redirect chain exceeds eight pages")
         path = self.cache / (hashlib.sha256(title.encode()).hexdigest() + ".json")
         if not path.exists() and self.offline:
-            if not hasattr(self, "canonical_cache"):
-                self.canonical_cache = {}
-                for candidate in self.cache.glob("*.json"):
-                    if candidate.name.startswith("api-"):
-                        continue
-                    entry = json.loads(candidate.read_text())
-                    canonical = entry.get("canonical_title")
-                    if canonical:
-                        self.canonical_cache[canonical.replace(" ", "_")] = candidate
+            # Build redirect identities once, under the lock. Other workers must
+            # not observe a partially populated index and report cached aliases missing.
+            with self.lock:
+                if not hasattr(self, "canonical_cache"):
+                    identities = {}
+                    for candidate in self.cache.glob("*.json"):
+                        if candidate.name.startswith("api-"):
+                            continue
+                        entry = json.loads(candidate.read_text())
+                        canonical = entry.get("canonical_title")
+                        if canonical:
+                            identities[canonical.replace(" ", "_")] = candidate
+                    self.canonical_cache = identities
             alias_path = self.canonical_cache.get(title.replace(" ", "_"))
             if alias_path:
                 path.write_text(alias_path.read_text())
@@ -178,15 +182,7 @@ def titles_from_records(records):
 def publish(records, report):
     for record in records:
         p = record["properties"]
-        if p["date"] == "2001-09-11" and p["name"] in SEPTEMBER_11_FLIGHTS:
-            p["event_type"] = "crash"
-            p["search_aliases"] = list(
-                dict.fromkeys(
-                    p.get("search_aliases", [])
-                    + ["9/11", "9-11", "911", "September 11", "September 11 attacks"]
-                )
-            )
-        elif re.search(
+        if re.search(
             r"near[ -](?:crash|miss|collision)|narrowly (?:avoided|missed)",
             p["name"] + " " + p["description"],
             re.I,
@@ -204,6 +200,10 @@ def publish(records, report):
                 },
             )
     validate(records)
+    from pipeline.audit import audit, write_report
+    entry_audit = audit(records, Fetcher(offline=True), report.get("enrichment"))
+    write_report(entry_audit, ROOT / "web/data")
+    report["source_entry_audit"] = entry_audit["summary"]
     mapped = [r for r in records if r["geometry"]]
     countries = Counter(r["properties"]["state"] for r in mapped)
     metadata = {
@@ -218,8 +218,8 @@ def publish(records, report):
         "coverage_complete": False,
         "mapped_by_country": dict(countries),
         "with_images": sum(bool(r["properties"].get("images")) for r in records),
-        "license": "Wikipedia text: CC BY-SA 4.0; OpenStreetMap wreck coordinates: ODbL-1.0; images retain individual file licenses",
-        "scope": "All discovered dedicated accident articles processed; list-only crash locations require additional evidence",
+        "license": "Wikipedia text: CC BY-SA 4.0; images retain individual file licenses",
+        "scope": "Wikipedia list entries and available accident articles; source-entry audit reports unresolved coverage and list-only crash locations",
     }
     report.update(metadata)
     report["awaiting_review"] = sum(
@@ -391,22 +391,7 @@ def main(argv=None, records=None, report=None):
                     flush=True,
                 )
     # Dedicated articles lead the merge so dates, aircraft, and site evidence replace shallow list parsing.
-    # Recover location-list country labels even after an older shallow publication.
-    location_title = "List_of_accidents_and_incidents_involving_airliners_by_location"
-    try:
-        location_page = Fetcher(offline=True).fetch(location_title)
-        location_source = {
-            "url": URL(location_title),
-            "title": location_title.replace("_", " "),
-            "revision": location_page["revision"],
-            "retrieved_at": location_page["retrieved_at"],
-        }
-        records += parse_civil(location_page["html"], location_title, location_source)
-    except RuntimeError:
-        pass
     combined = reconcile(fetched + records)
-    overrides = json.loads((ROOT / "pipeline/reviewed.json").read_text())
-    combined = reconcile(overrides + combined)
     try:
         match_episodes(combined, Fetcher(offline=True).fetch("List_of_Mayday_episodes"))
     except RuntimeError:
@@ -417,8 +402,6 @@ def main(argv=None, records=None, report=None):
         "failures": failures,
         "completed_at": STAMP(),
     }
-    from pipeline.locations import supplement_locations
-    supplement_locations(combined, report, offline=args.offline)
     publish(combined, report)
 
 

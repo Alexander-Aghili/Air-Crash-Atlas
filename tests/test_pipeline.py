@@ -239,16 +239,38 @@ class NonImpactTests(unittest.TestCase):
         self.assertIsNone(row["geometry"])
 
 
-class September11Tests(unittest.TestCase):
-    def test_four_fatal_hijackings_are_mapped_crashes(self):
-        from pipeline.articles import SEPTEMBER_11_FLIGHTS
+class SourceDataTests(unittest.TestCase):
+    def test_linked_model_and_airshow_lists_are_discovered(self):
+        from pipeline.extract import is_accident_list
+        for title in ["List_of_Harrier_family_losses", "List_of_F-15_losses", "List_of_air_show_accidents_and_incidents_in_the_20th_century"]:
+            self.assertTrue(is_accident_list(title))
+        self.assertFalse(is_accident_list("List_of_rail_accidents"))
 
-        html = '<table class="infobox"><tr><th>Date</th><td>2001-09-11</td></tr><tr><th>Summary</th><td>Terrorist suicide hijacking</td></tr><tr><th>Site</th><td>Actual impact site <span class="geo">40.7; -74</span></td></tr></table>'
-        for title in SEPTEMBER_11_FLIGHTS:
-            row = article(html, title.replace(" ", "_"), SOURCE)
+    def test_fairfax_date_comes_from_source(self):
+        html = '<table class="infobox"><tr><th>Date</th><td>17 May 1946</td></tr></table>'
+        row = article(html, "Fairfax,_California_B-17_crash", SOURCE)
+        self.assertEqual(row["properties"]["date"], "1946-05-17")
+        self.assertEqual(row["properties"]["raw_infobox"]["date"], "17 May 1946")
+        self.assertIsNone(article('<p>No source date</p>', "Fairfax,_California_B-17_crash", SOURCE))
+
+    def test_initial_disappearance_does_not_override_established_crash(self):
+        for summary in ["Controlled flight into terrain", "Ditching following dual engine failure", "In-flight explosion"]:
+            html = f'<div class="mw-parser-output"><p>The aircraft disappeared during its flight and wreckage was subsequently found.</p><table class="infobox"><tr><th>Date</th><td>2005-01-02</td></tr><tr><th>Summary</th><td>{summary}</td></tr><tr><th>Site</th><td>Impact site <span class="geo">40.7; -74</span></td></tr></table></div>'
+            row = article(html, "Unspecified flight", SOURCE)
             self.assertEqual(row["properties"]["event_type"], "crash")
             self.assertIsNotNone(row["geometry"])
-            self.assertIn("9/11", row["properties"]["search_aliases"])
+
+    def test_hijacking_with_source_described_crash_is_mapped(self):
+        html = '<div class="mw-parser-output"><div><p>The aircraft was hijacked and deliberately crashed into a building.</p></div><table class="infobox"><tr><th>Date</th><td>2005-01-02</td></tr><tr><th>Summary</th><td>Hijacking</td></tr><tr><th>Site</th><td>Impact site <span class="geo">40.7; -74</span></td></tr></table></div>'
+        row = article(html, "Unspecified flight", SOURCE)
+        self.assertEqual(row["properties"]["event_type"], "crash")
+        self.assertIsNotNone(row["geometry"])
+
+    def test_suicide_hijacking_classification_uses_source_summary(self):
+        html = '<table class="infobox"><tr><th>Date</th><td>2005-01-02</td></tr><tr><th>Summary</th><td>Terrorist suicide hijacking</td></tr><tr><th>Site</th><td>Impact site <span class="geo">40.7; -74</span></td></tr></table>'
+        row = article(html, "Unspecified flight", SOURCE)
+        self.assertEqual(row["properties"]["event_type"], "crash")
+        self.assertIsNotNone(row["geometry"])
 
 
 class MilitaryListTests(unittest.TestCase):
