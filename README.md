@@ -63,14 +63,3 @@ These are inferred illustrations, not historical transmitted emitter categories 
 exact mass/dimension measurements. No crash-data edits or additional update command
 are needed: newly extracted aircraft names and fatalities use the same renderer.
 
-The 1956 Grand Canyon collision resolves two separately mapped wreck-site sources
-from OpenStreetMap during the normal update. Source references contain node IDs
-and expected registrations, not manually entered coordinates. Each fetched node
-must match the Wikipedia article, full crash date, aircraft registration, and
-`historic=aircraft_wreck`. Both sites must match before either is published.
-These community-mapped locations are approximate and credited under ODbL-1.0;
-`--offline` uses their cached source responses. Historic-site centers and memorial
-locations remain excluded. Collision fatality colors use the article’s Total
-fatalities field when available, rather than the first aircraft’s fatalities.
-
-# AirCrashAtlas-
