@@ -179,7 +179,23 @@ def titles_from_records(records):
     }
 
 
+def apply_reviewed_locations(records):
+    """Apply explicit, user-authorized location corrections after article parsing."""
+    corrections = json.loads((ROOT / 'pipeline/reviewed.json').read_text())
+    by_article = {item['article_url']: item for item in corrections}
+    for record in records:
+        props = record['properties']
+        correction = by_article.get(props.get('article_url'))
+        if correction:
+            record['geometry'] = correction['geometry']
+            props['site_geometries'] = [correction['geometry']]
+            for field in ['location_kind', 'location_quality', 'uncertainty', 'evidence']:
+                props[field] = correction[field]
+            props['override_location'] = True
+
+
 def publish(records, report):
+    apply_reviewed_locations(records)
     excluded = [r for r in records if r['properties']['civil_or_military'] == 'military']
     records = [r for r in records if r['properties']['civil_or_military'] == 'civil']
     excluded_ids = sorted(set(report.get('publication_scope', {}).get('excluded_source_entry_ids', [])) | {e['entry_id'] for r in excluded for e in r['properties'].get('source_entries', [])})

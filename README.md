@@ -26,7 +26,7 @@ Published files are `web/data/events.geojson`, `events.json`, and `coverage.json
 
 Coordinates are extracted only from an event infobox's Site field, never from arbitrary article coordinates, origin or destination airports, nearby towns, or memorials. Disappearances and last-known or presumed locations remain unresolved. Multiple Site coordinates remain attached to one collision record and appear as multiple map markers. Source-supplied coordinates are labeled as article impact coordinates; they have not all been independently surveyed. Approximate reviewed sites receive dashed outlines and an uncertainty explanation.
 
-Event details come from Wikipedia lists and accident articles. No manually reviewed records, date overrides, previous published records, or external wreck-site coordinates are injected. Article records retain raw infobox text alongside normalized fields. Discovery follows linked aviation accident lists recursively, starting with the commercial accident list. This does not guarantee every Wikipedia crash is discovered or parsed.
+Event details come from Wikipedia lists and accident articles. Dates and event facts are extracted from Wikipedia. Explicit user-authorized location corrections in `pipeline/reviewed.json` are applied after extraction; each retains its source and uncertainty. Previous published records and external wreck-site coordinates are not injected. Article records retain raw infobox text alongside normalized fields. Discovery follows linked aviation accident lists recursively, starting with the commercial accident list. This does not guarantee every Wikipedia crash is discovered or parsed.
 
 The archive is still incomplete: list-only events require further location evidence, unsupported list layouts need review, and automatic event and country classification remains provisional. Completing the discovered article pass does not imply complete worldwide coverage. No coordinates are invented to increase marker counts.
 
@@ -73,3 +73,5 @@ Every publication runs a source-entry audit against its cached source snapshots.
 The supplemental parser handles full dates in definition lists, narrative paragraphs, nested loss bullets, date-column aliases, multirow table headings, and inherited table cells. Month-only dates retain month precision. The original source text remains attached through duplicate merging; article operator evidence takes priority over shallow list classification.
 
 Military records are excluded from publication. The source-entry audit labels known military entries as excluded rather than missing. Local module and dataset URLs carry a release version to prevent stale browser assets from using older selection rules.
+
+The 1956 Grand Canyon collision has a user-requested approximate marker at Wikipedia’s crash-site National Historic Landmark coordinate. This represents the crash-site area rather than an exact collision point.

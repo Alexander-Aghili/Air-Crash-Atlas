@@ -1,9 +1,9 @@
-import { AIRCRAFT_GROUPS } from './appearance.js?v=20261004-civil';
-import { ResultsView } from './results.js?v=20261004-civil';
-import { $, num, node, link, imageURL, sitePoints, siteLabel } from './dom.js?v=20261004-civil';
-import { CrashCatalog } from './catalog.js?v=20261004-civil';
-import { CrashMap } from './map.js?v=20261004-civil';
-import { PAGE_SIZE } from './constants.js?v=20261004-civil';
+import { AIRCRAFT_GROUPS } from './appearance.js?v=20261004-civil-location';
+import { ResultsView } from './results.js?v=20261004-civil-location';
+import { $, num, node, link, imageURL, sitePoints, siteLabel } from './dom.js?v=20261004-civil-location';
+import { CrashCatalog } from './catalog.js?v=20261004-civil-location';
+import { CrashMap } from './map.js?v=20261004-civil-location';
+import { PAGE_SIZE } from './constants.js?v=20261004-civil-location';
 const FILTERS=['search','state','quality','event-type','year-from','year-to','aircraft','media','aircraft-group'];
 export class CrashApplication {
   constructor(){this.visible=[];this.limit=PAGE_SIZE;this.selected=null;this.scope='all';this.updating=false;this.decades=null;this.mapView=new CrashMap(this);this.results=new ResultsView(this);}
@@ -44,7 +44,7 @@ export class CrashApplication {
   async init(){
     this.bindPageControls();
     try{
-      const response=await fetch('data/events.geojson?v=20261004-civil');if(!response.ok)throw Error('The records could not load. Reload to try again.');
+      const response=await fetch('data/events.geojson?v=20261004-civil-location');if(!response.ok)throw Error('The records could not load. Reload to try again.');
       const data=await response.json();this.catalog=new CrashCatalog(data);this.displayCatalog(data.metadata);
       try{this.mapView.setupMap();}catch(error){this.message(error.message);$('in-view').disabled=true;for(const id of ['street','satellite','fit','view'])$(id).disabled=true;}
       this.bindCatalogControls();this.restore();

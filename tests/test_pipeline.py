@@ -384,3 +384,22 @@ class OccurrenceSelectionTests(unittest.TestCase):
         result = reconcile([current, stale])
         self.assertEqual(len(result), 1)
         self.assertIsNone(result[0]['geometry'])
+
+    def test_user_authorized_location_is_reapplied_after_article_reparse(self):
+        import json, tempfile
+        from pathlib import Path
+        from unittest.mock import patch
+        from pipeline.enrich import apply_reviewed_locations
+        row = article('<table class="infobox"><tr><th>Date</th><td>1956-06-30</td></tr><tr><th>Summary</th><td>Mid-air collision</td></tr><tr><th>Site</th><td>A canyon</td></tr></table>', 'Example collision', SOURCE)
+        correction = {'article_url': SOURCE['url'], 'geometry': {'type': 'Point', 'coordinates': [-111.8, 36.1]}, 'location_kind': 'event site', 'location_quality': 'approximate', 'uncertainty': {'description': 'Representative crash-site area'}, 'evidence': {'method': 'Explicit user-authorized correction', 'source_url': SOURCE['url']}}
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'pipeline').mkdir()
+            (root / 'pipeline/reviewed.json').write_text(json.dumps([correction]))
+            with patch('pipeline.enrich.ROOT', root):
+                apply_reviewed_locations([row])
+                row['geometry'] = None
+                apply_reviewed_locations([row])
+        self.assertEqual(row['geometry'], correction['geometry'])
+        self.assertEqual(row['properties']['location_quality'], 'approximate')
+        self.assertTrue(row['properties']['override_location'])

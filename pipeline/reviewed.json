@@ -1,1 +1,21 @@
-[]
+[
+  {
+    "article_url": "https://en.wikipedia.org/wiki/1956_Grand_Canyon_mid-air_collision",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -111.83333,
+        36.175
+      ]
+    },
+    "location_kind": "event site",
+    "location_quality": "approximate",
+    "uncertainty": {
+      "description": "Representative coordinate for the crash-site National Historic Landmark area; not an exact airborne collision point or a separate coordinate for each aircraft."
+    },
+    "evidence": {
+      "method": "User-requested manual mapping using Wikipedia\u2019s coordinates for the crash-site National Historic Landmark. The marker represents the crash-site area, not an exact impact point.",
+      "source_url": "https://en.wikipedia.org/wiki/1956_Grand_Canyon_mid-air_collision#National_Historic_Landmark"
+    }
+  }
+]

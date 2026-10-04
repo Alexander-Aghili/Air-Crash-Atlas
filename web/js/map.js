@@ -1,6 +1,6 @@
-import { markerHTML, markerDescription, FATALITY_BINS, YEAR_STOPS } from './appearance.js?v=20261004-civil';
-import { PAGE_SIZE } from "./constants.js?v=20261004-civil";
-import { $, num, sitePoints } from "./dom.js?v=20261004-civil";
+import { markerHTML, markerDescription, FATALITY_BINS, YEAR_STOPS } from './appearance.js?v=20261004-civil-location';
+import { PAGE_SIZE } from "./constants.js?v=20261004-civil-location";
+import { $, num, sitePoints } from "./dom.js?v=20261004-civil-location";
 export class CrashMap {
   constructor(app) {
     this.app = app;

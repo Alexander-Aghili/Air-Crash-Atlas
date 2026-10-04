@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-04T18:27:36.593208+00:00",
+  "generated_at": "2026-10-04T18:38:50.591883+00:00",
   "roots": [
     "https://en.wikipedia.org/wiki/List_of_accidents_and_incidents_involving_commercial_aircraft"
   ],
@@ -365,7 +365,7 @@
     "needs_review": 301,
     "excluded": 4755,
     "matched_entries_without_article_enrichment": 3616,
-    "matched_entries_without_coordinates": 5325,
+    "matched_entries_without_coordinates": 5318,
     "unique_records_linked_to_entries": 5372,
     "published_records": 5576,
     "published_records_without_entry_link_in_audited_scope": 204
@@ -9204,7 +9204,7 @@
       "event_ids": [
         "f643144204d28b5ceb0a"
       ],
-      "mapped": false,
+      "mapped": true,
       "article_enriched": true,
       "record_names": [
         "1956 Grand Canyon mid-air collision"
@@ -9214,9 +9214,6 @@
       ],
       "categories": [
         "civil"
-      ],
-      "location_reasons": [
-        "No event-specific impact coordinates established"
       ]
     },
     {
@@ -69803,7 +69800,7 @@
       "event_ids": [
         "f643144204d28b5ceb0a"
       ],
-      "mapped": false,
+      "mapped": true,
       "article_enriched": true,
       "record_names": [
         "1956 Grand Canyon mid-air collision"
@@ -69813,9 +69810,6 @@
       ],
       "categories": [
         "civil"
-      ],
-      "location_reasons": [
-        "No event-specific impact coordinates established"
       ]
     },
     {
@@ -288538,7 +288532,7 @@
       "event_ids": [
         "f643144204d28b5ceb0a"
       ],
-      "mapped": false,
+      "mapped": true,
       "article_enriched": true,
       "record_names": [
         "1956 Grand Canyon mid-air collision"
@@ -288548,9 +288542,6 @@
       ],
       "categories": [
         "civil"
-      ],
-      "location_reasons": [
-        "No event-specific impact coordinates established"
       ]
     },
     {
@@ -299038,7 +299029,7 @@
       "event_ids": [
         "f643144204d28b5ceb0a"
       ],
-      "mapped": false,
+      "mapped": true,
       "article_enriched": true,
       "record_names": [
         "1956 Grand Canyon mid-air collision"
@@ -299048,9 +299039,6 @@
       ],
       "categories": [
         "civil"
-      ],
-      "location_reasons": [
-        "No event-specific impact coordinates established"
       ]
     },
     {
@@ -311592,7 +311580,7 @@
       "event_ids": [
         "f643144204d28b5ceb0a"
       ],
-      "mapped": false,
+      "mapped": true,
       "article_enriched": true,
       "record_names": [
         "1956 Grand Canyon mid-air collision"
@@ -311602,9 +311590,6 @@
       ],
       "categories": [
         "civil"
-      ],
-      "location_reasons": [
-        "No event-specific impact coordinates established"
       ]
     },
     {
@@ -383899,7 +383884,7 @@
       "event_ids": [
         "f643144204d28b5ceb0a"
       ],
-      "mapped": false,
+      "mapped": true,
       "article_enriched": true,
       "record_names": [
         "1956 Grand Canyon mid-air collision"
@@ -383909,9 +383894,6 @@
       ],
       "categories": [
         "civil"
-      ],
-      "location_reasons": [
-        "No event-specific impact coordinates established"
       ]
     },
     {
@@ -481231,7 +481213,7 @@
       "event_ids": [
         "f643144204d28b5ceb0a"
       ],
-      "mapped": false,
+      "mapped": true,
       "article_enriched": true,
       "record_names": [
         "1956 Grand Canyon mid-air collision"
@@ -481241,9 +481223,6 @@
       ],
       "categories": [
         "civil"
-      ],
-      "location_reasons": [
-        "No event-specific impact coordinates established"
       ]
     },
     {

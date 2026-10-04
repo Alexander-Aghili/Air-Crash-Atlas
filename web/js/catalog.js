@@ -1,5 +1,5 @@
 function dateAliases(date){const parts=date.split("-");return parts.length===3?`${Number(parts[1])}/${Number(parts[2])} ${Number(parts[1])}-${Number(parts[2])}`:"";}
-import { aircraftGroups } from './appearance.js?v=20261004-civil';
+import { aircraftGroups } from './appearance.js?v=20261004-civil-location';
 export class CrashCatalog {
   constructor(data) {
     if(data.type!=='FeatureCollection'||!Array.isArray(data.features))throw Error('The archive dataset is invalid.');
