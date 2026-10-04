@@ -20,6 +20,19 @@ class SourceEntryAuditTests(unittest.TestCase):
         self.assertEqual(date_text("March 21 – An aircraft disappeared; its wreckage was found in 1958.", "1931"), "1931-03-21")
         self.assertEqual(date_text("September 12 – Air France Flight 2005 crashed at an airport.", "1961"), "1961-09-12")
 
+    def test_flight_numbers_are_not_years(self):
+        from pipeline.source_entries import date_text
+        self.assertIsNone(date_text('Example Flight 1862 crashed.'))
+        self.assertEqual(date_text('Example Flight 1862 crashed in 1992.'), '1992')
+        self.assertEqual(date_text('September 12 – Example Flight 2005 crashed.', '1961'), '1961-09-12')
+
+    def test_summary_of_several_years_is_not_published_as_one_event(self):
+        html = '<p>The deadliest crash was Example Flight 1862. Other aircraft crashed in 1946, 1980 and 1993.</p>'
+        entries = enumerate_entries(html, 'List_of_aviation_accidents')
+        self.assertEqual(entries[0]['review_reason'], 'multiple_event_dates_in_one_entry')
+        self.assertIsNone(entries[0]['date'])
+        self.assertEqual(parse_unusual(html, 'List_of_aviation_accidents', self.source, []), [])
+
     def test_month_and_season_definition_dates_retain_source_precision(self):
         html = '<h2>1950</h2><dl><dt>February</dt><dd>A Navy aircraft crashed at an airfield.</dd><dt>Summer</dt><dd>A second Navy aircraft crashed at another airfield.</dd></dl>'
         entries = enumerate_entries(html, "List_of_aviation_accidents")

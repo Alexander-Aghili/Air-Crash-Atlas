@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-04T18:38:50.591883+00:00",
+  "generated_at": "2026-10-04T18:56:48.093471+00:00",
   "roots": [
     "https://en.wikipedia.org/wiki/List_of_accidents_and_incidents_involving_commercial_aircraft"
   ],
@@ -358,17 +358,17 @@
     "unavailable_pages": 0,
     "pages_requiring_review": 0,
     "candidate_entries": 14808,
-    "entries_with_published_record": 9967,
-    "entries_without_published_record": 4841,
-    "matched": 9752,
+    "entries_with_published_record": 9966,
+    "entries_without_published_record": 4842,
+    "matched": 9740,
     "missing": 0,
-    "needs_review": 301,
+    "needs_review": 313,
     "excluded": 4755,
-    "matched_entries_without_article_enrichment": 3616,
-    "matched_entries_without_coordinates": 5318,
-    "unique_records_linked_to_entries": 5372,
-    "published_records": 5576,
-    "published_records_without_entry_link_in_audited_scope": 204
+    "matched_entries_without_article_enrichment": 3604,
+    "matched_entries_without_coordinates": 5306,
+    "unique_records_linked_to_entries": 5360,
+    "published_records": 5575,
+    "published_records_without_entry_link_in_audited_scope": 215
   },
   "pages": [
     {
@@ -536,9 +536,9 @@
       "retrieved_at": "2026-10-03T03:02:02.674653+00:00",
       "entries": 75,
       "counts": {
-        "matched": 67,
-        "excluded": 7,
-        "needs_review": 1
+        "needs_review": 4,
+        "matched": 64,
+        "excluded": 7
       },
       "layouts": {
         "p": 74,
@@ -625,9 +625,9 @@
       "retrieved_at": "2026-10-02T18:02:54.556268+00:00",
       "entries": 112,
       "counts": {
-        "matched": 109,
-        "excluded": 2,
-        "needs_review": 1
+        "matched": 106,
+        "needs_review": 4,
+        "excluded": 2
       },
       "layouts": {
         "p": 4,
@@ -742,9 +742,9 @@
       "retrieved_at": "2026-10-02T18:55:26.828193+00:00",
       "entries": 24,
       "counts": {
-        "matched": 22,
-        "excluded": 1,
-        "needs_review": 1
+        "matched": 20,
+        "needs_review": 3,
+        "excluded": 1
       },
       "layouts": {
         "p": 11,
@@ -895,7 +895,8 @@
       "retrieved_at": "2026-10-02T18:01:28.489638+00:00",
       "entries": 71,
       "counts": {
-        "matched": 65,
+        "needs_review": 1,
+        "matched": 64,
         "excluded": 6
       },
       "layouts": {
@@ -1098,9 +1099,9 @@
       "retrieved_at": "2026-10-02T18:03:14.202616+00:00",
       "entries": 114,
       "counts": {
-        "matched": 89,
-        "excluded": 20,
-        "needs_review": 5
+        "matched": 88,
+        "needs_review": 6,
+        "excluded": 20
       },
       "layouts": {
         "p": 114
@@ -1219,8 +1220,8 @@
       "entries": 356,
       "counts": {
         "excluded": 184,
-        "needs_review": 5,
-        "matched": 167
+        "needs_review": 6,
+        "matched": 166
       },
       "layouts": {
         "p": 2,
@@ -1473,8 +1474,8 @@
       "retrieved_at": "2026-10-03T03:02:33.347268+00:00",
       "entries": 102,
       "counts": {
-        "matched": 97,
-        "needs_review": 2,
+        "needs_review": 3,
+        "matched": 96,
         "excluded": 3
       },
       "layouts": {
@@ -18358,7 +18359,7 @@
       "source_position": 536,
       "text": "Japan Air Lines Flight 2 after the accidental ditch November 22 – Japan Air Lines Flight 2 , a Douglas DC-8, ditched in San Francisco Bay as a result of pilot error; all 107 on board survived.",
       "layout": "li",
-      "date": "1968",
+      "date": "1968-11-22",
       "raw_date": "Japan Air Lines Flight 2 after the accidental ditch November 22 – Japan Air Lines Flight 2 , a Douglas DC-8, ditched in San Francisco Bay as a result of pilot error; all 107 on board survived.",
       "section": "1968",
       "links": [
@@ -25110,7 +25111,7 @@
       "source_position": 748,
       "text": "Crash site of Eastern Airlines Flight 66 June 24 – Eastern Air Lines Flight 66 , a Boeing 727, encountered wind shear on final approach and struck approach lights at John F. Kennedy International Airport, New York, killing 113 of 124 people on board.",
       "layout": "li",
-      "date": "1975",
+      "date": "1975-06-24",
       "raw_date": "Crash site of Eastern Airlines Flight 66 June 24 – Eastern Air Lines Flight 66 , a Boeing 727, encountered wind shear on final approach and struck approach lights at John F. Kennedy International Airport, New York, killing 113 of 124 people on board.",
       "section": "1975",
       "links": [
@@ -47081,13 +47082,13 @@
       "source_position": 1429,
       "text": "Delta Air Lines Flight 1989 , a Boeing 767-332ER on a scheduled flight from Logan International Airport to Los Angeles International Airport, experienced a suspected hijacking but safely landed at Cleveland Hopkins International Airport.",
       "layout": "li",
-      "date": "1989",
+      "date": null,
       "raw_date": "Delta Air Lines Flight 1989 , a Boeing 767-332ER on a scheduled flight from Logan International Airport to Los Angeles International Airport, experienced a suspected hijacking but safely landed at Cleveland Hopkins International Airport.",
       "section": "2001",
       "links": [
         "Delta_Air_Lines_Flight_1989"
       ],
-      "review_reason": null,
+      "review_reason": "date_unresolved",
       "fields": {},
       "source_title": "List_of_accidents_and_incidents_involving_commercial_aircraft",
       "source_url": "https://en.wikipedia.org/wiki/List_of_accidents_and_incidents_involving_commercial_aircraft#2001",
@@ -63356,7 +63357,7 @@
         "World_Trade_Center_(1973–2001)",
         "Collapse_of_the_World_Trade_Center"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_deadliest_aircraft_accidents_and_incidents",
       "source_url": "https://en.wikipedia.org/wiki/List_of_deadliest_aircraft_accidents_and_incidents#History",
@@ -91336,13 +91337,13 @@
       "source_position": 572,
       "text": "Gero, David (2006). Aviation Disasters: The World's Major Civil Airliner Crashes Since 1950 (4th ed.). London: J.H. Haynes & Co. Ltd. ISBN 0-7509-3146-9 .",
       "layout": "li",
-      "date": "2006",
+      "date": null,
       "raw_date": "Gero, David (2006). Aviation Disasters: The World's Major Civil Airliner Crashes Since 1950 (4th ed.). London: J.H. Haynes & Co. Ltd. ISBN 0-7509-3146-9 .",
       "section": "Books",
       "links": [
         "ISBN_(identifier)"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_deadliest_aircraft_accidents_and_incidents",
       "source_url": "https://en.wikipedia.org/wiki/List_of_deadliest_aircraft_accidents_and_incidents#Books",
@@ -181970,7 +181971,7 @@
       "raw_date": "( 2 ) 20 July 1974 – During the first day of the conflict, F-100D 55-3756 of 171.Filo and F-100C 54-2042 of 132.Filo were shot down by Greek Cypriot anti-aircraft fire. [ 116 ]",
       "section": "Cyprus_Conflict_(1963–1974)",
       "links": [],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_aircraft_shootdowns",
       "source_url": "https://en.wikipedia.org/wiki/List_of_aircraft_shootdowns#Cyprus_Conflict_(1963–1974)",
@@ -182040,7 +182041,7 @@
       "raw_date": "( 3 ) 21 July 1974 – F-100D 55-2825 of 111.Filo, F-100C 54-2083 of 112.Filo and F-104G 64-17783 of 191.Filo were shot down by Turkish Navy destroyers. [ 116 ]",
       "section": "Cyprus_Conflict_(1963–1974)",
       "links": [],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_aircraft_shootdowns",
       "source_url": "https://en.wikipedia.org/wiki/List_of_aircraft_shootdowns#Cyprus_Conflict_(1963–1974)",
@@ -185511,7 +185512,7 @@
         "Pakistan_Air_Force",
         "Chengdu_J-10"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_aircraft_shootdowns",
       "source_url": "https://en.wikipedia.org/wiki/List_of_aircraft_shootdowns#India–Pakistan_military_confrontation_(1992,_1996,_1999,_2019_and_2025)",
@@ -186745,12 +186746,12 @@
         "Sun_Yat-sen",
         "Sun_Fo"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_airliner_shootdown_incidents",
       "source_url": "https://en.wikipedia.org/wiki/List_of_airliner_shootdown_incidents#Kweilin_incident",
       "revision": 1375415895,
-      "status": "matched",
+      "status": "needs_review",
       "event_ids": [
         "d9b01e0d2cd7df70d464"
       ],
@@ -186765,6 +186766,7 @@
       "categories": [
         "civil"
       ],
+      "reason": "multiple_event_dates_in_one_entry; published record exists but this entry is not certified",
       "location_reasons": [
         "No event-specific impact coordinates established"
       ]
@@ -187198,12 +187200,12 @@
         "Fighter_aircraft",
         "Strafing"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_airliner_shootdown_incidents",
       "source_url": "https://en.wikipedia.org/wiki/List_of_airliner_shootdown_incidents#KNILM_PK-AFV",
       "revision": 1375415895,
-      "status": "matched",
+      "status": "needs_review",
       "event_ids": [
         "06baebb0bc8cfd34da28"
       ],
@@ -187218,6 +187220,7 @@
       "categories": [
         "civil"
       ],
+      "reason": "multiple_event_dates_in_one_entry; published record exists but this entry is not certified",
       "location_reasons": [
         "No event-specific impact coordinates established"
       ]
@@ -188183,12 +188186,12 @@
         "Laos",
         "Global_Affairs_Canada"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_airliner_shootdown_incidents",
       "source_url": "https://en.wikipedia.org/wiki/List_of_airliner_shootdown_incidents#1965:_CITCA_F-BELV",
       "revision": 1375415895,
-      "status": "matched",
+      "status": "needs_review",
       "event_ids": [
         "850025de8bcfef1d9c30"
       ],
@@ -188203,6 +188206,7 @@
       "categories": [
         "civil"
       ],
+      "reason": "multiple_event_dates_in_one_entry; published record exists but this entry is not certified",
       "location_reasons": [
         "No event-specific impact coordinates established"
       ]
@@ -205924,12 +205928,12 @@
       "links": [
         "Peter_Siebold"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_spaceflight-related_accidents_and_incidents",
       "source_url": "https://en.wikipedia.org/wiki/List_of_spaceflight-related_accidents_and_incidents",
       "revision": 1376330335,
-      "status": "matched",
+      "status": "needs_review",
       "event_ids": [
         "99a397d01d44dd9c1318"
       ],
@@ -205944,6 +205948,7 @@
       "categories": [
         "civil"
       ],
+      "reason": "multiple_event_dates_in_one_entry; published record exists but this entry is not certified",
       "location_reasons": [
         "No event-specific impact coordinates established"
       ]
@@ -210598,16 +210603,16 @@
       "source_position": 111,
       "text": "Manned space programs accident/incident summaries (1963–1969) – NASA report (PDF format)",
       "layout": "li",
-      "date": "1963",
+      "date": null,
       "raw_date": "Manned space programs accident/incident summaries (1963–1969) – NASA report (PDF format)",
       "section": "External_links",
       "links": [],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_spaceflight-related_accidents_and_incidents",
       "source_url": "https://en.wikipedia.org/wiki/List_of_spaceflight-related_accidents_and_incidents#External_links",
       "revision": 1376330335,
-      "status": "matched",
+      "status": "needs_review",
       "event_ids": [
         "95fe027e0a0cfd7e3629"
       ],
@@ -210622,6 +210627,7 @@
       "categories": [
         "civil"
       ],
+      "reason": "multiple_event_dates_in_one_entry; published record exists but this entry is not certified",
       "location_reasons": [
         "No event-specific impact coordinates established"
       ]
@@ -210631,16 +210637,16 @@
       "source_position": 112,
       "text": "Manned space programs accident/incident summaries (1970–1971) – NASA report (PDF format)",
       "layout": "li",
-      "date": "1970",
+      "date": null,
       "raw_date": "Manned space programs accident/incident summaries (1970–1971) – NASA report (PDF format)",
       "section": "External_links",
       "links": [],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_spaceflight-related_accidents_and_incidents",
       "source_url": "https://en.wikipedia.org/wiki/List_of_spaceflight-related_accidents_and_incidents#External_links",
       "revision": 1376330335,
-      "status": "matched",
+      "status": "needs_review",
       "event_ids": [
         "730a3956659b5d4feaab"
       ],
@@ -210655,6 +210661,7 @@
       "categories": [
         "civil"
       ],
+      "reason": "multiple_event_dates_in_one_entry; published record exists but this entry is not certified",
       "location_reasons": [
         "No event-specific impact coordinates established"
       ]
@@ -245850,7 +245857,7 @@
         "American_Airlines_Flight_191",
         "American_Airlines_Flight_587"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_American_Airlines_accidents_and_incidents",
       "source_url": "https://en.wikipedia.org/wiki/List_of_American_Airlines_accidents_and_incidents",
@@ -245870,7 +245877,7 @@
       "categories": [
         "civil"
       ],
-      "reason": "linked_article_describes_a_different_event_year; event subject needs verification",
+      "reason": "multiple_event_dates_in_one_entry; published record exists but this entry is not certified",
       "linked_article_dates": [
         "1959-02-03"
       ],
@@ -294362,12 +294369,12 @@
         "Sydney",
         "Melbourne"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_Vietnam_Airlines_accidents_and_incidents",
       "source_url": "https://en.wikipedia.org/wiki/List_of_Vietnam_Airlines_accidents_and_incidents#Beginnings",
       "revision": 1377538749,
-      "status": "matched",
+      "status": "needs_review",
       "event_ids": [
         "2c81739ec73209ca71a8"
       ],
@@ -294382,6 +294389,7 @@
       "categories": [
         "civil"
       ],
+      "reason": "multiple_event_dates_in_one_entry; published record exists but this entry is not certified",
       "location_reasons": [
         "No event-specific impact coordinates established"
       ]
@@ -294405,12 +294413,12 @@
         "McDonnell_Douglas_MD-11",
         "Pochentong_Airport"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_Vietnam_Airlines_accidents_and_incidents",
       "source_url": "https://en.wikipedia.org/wiki/List_of_Vietnam_Airlines_accidents_and_incidents#New_enterprise:_1993–2006",
       "revision": 1377538749,
-      "status": "matched",
+      "status": "needs_review",
       "event_ids": [
         "4081d77b48156e0c7ed0"
       ],
@@ -294425,6 +294433,7 @@
       "categories": [
         "civil"
       ],
+      "reason": "multiple_event_dates_in_one_entry; published record exists but this entry is not certified",
       "location_reasons": [
         "No event-specific impact coordinates established"
       ]
@@ -311855,7 +311864,7 @@
       "raw_date": "South Vietnam lost 1,018 aircraft and helicopters from January 1964 to September 1973. [ 5 ] 877 Republic of Vietnam aircraft were captured at the end of the war in 1975. [ 6 ] Of the 2,750 [ 7 ] aircraft and helicopters received by South Vietnam, only about 308 survived (240 flew to Thailand or US warships [ 8 ] and 68 returned to the United States [ 9 ] ).",
       "section": "",
       "links": [],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_aircraft_losses_of_the_Vietnam_War",
       "source_url": "https://en.wikipedia.org/wiki/List_of_aircraft_losses_of_the_Vietnam_War",
@@ -312098,7 +312107,7 @@
         "Vientiane,_Laos",
         "Pathet_Lao"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_aircraft_losses_of_the_Vietnam_War",
       "source_url": "https://en.wikipedia.org/wiki/List_of_aircraft_losses_of_the_Vietnam_War#USAF_fixed-wing",
@@ -312449,11 +312458,11 @@
       "source_position": 34,
       "text": "Two crashes in 1968, one 1969, all operational (non-combat)",
       "layout": "li",
-      "date": "1968",
+      "date": null,
       "raw_date": "Two crashes in 1968, one 1969, all operational (non-combat)",
       "section": "USAF_fixed-wing",
       "links": [],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_aircraft_losses_of_the_Vietnam_War",
       "source_url": "https://en.wikipedia.org/wiki/List_of_aircraft_losses_of_the_Vietnam_War#USAF_fixed-wing",
@@ -312990,13 +312999,13 @@
       "source_position": 1,
       "text": "The following is a partial and unofficial list of helicopter and airplane crashes, accidents and shootdowns that occurred during the Soviet–Afghan War of 1979–1989. In total, at least 333 helicopters and 118 Soviet jets were reported lost during the war. [ 1 ]",
       "layout": "p",
-      "date": "1979",
+      "date": null,
       "raw_date": "The following is a partial and unofficial list of helicopter and airplane crashes, accidents and shootdowns that occurred during the Soviet–Afghan War of 1979–1989. In total, at least 333 helicopters and 118 Soviet jets were reported lost during the war. [ 1 ]",
       "section": "",
       "links": [
         "Soviet–Afghan_War"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_Soviet_aircraft_losses_during_the_Soviet–Afghan_War",
       "source_url": "https://en.wikipedia.org/wiki/List_of_Soviet_aircraft_losses_during_the_Soviet%E2%80%93Afghan_War",
@@ -316880,7 +316889,7 @@
         "MiG-29",
         "Termez_Airport"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_Soviet_aircraft_losses_during_the_Soviet–Afghan_War",
       "source_url": "https://en.wikipedia.org/wiki/List_of_Soviet_aircraft_losses_during_the_Soviet%E2%80%93Afghan_War#Non-Soviet_losses",
@@ -322785,7 +322794,7 @@
       "source_position": 1,
       "text": "This is a list of aviation shootdowns accidents, and incidents during the Yugoslav Wars . It includes helicopters, fixed-wing aircraft and unmanned aircraft losses from the Ten-Day War (1991), the Croatian War of Independence (1991–1995), the Bosnian War (1992–1995), the Insurgency in Kosovo (1995–1998) , the Kosovo War (1998–1999), and the Insurgency in Macedonia (2001).",
       "layout": "p",
-      "date": "1991",
+      "date": null,
       "raw_date": "This is a list of aviation shootdowns accidents, and incidents during the Yugoslav Wars . It includes helicopters, fixed-wing aircraft and unmanned aircraft losses from the Ten-Day War (1991), the Croatian War of Independence (1991–1995), the Bosnian War (1992–1995), the Insurgency in Kosovo (1995–1998) , the Kosovo War (1998–1999), and the Insurgency in Macedonia (2001).",
       "section": "",
       "links": [
@@ -322797,7 +322806,7 @@
         "Kosovo_War",
         "2001_insurgency_in_Macedonia"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_aviation_shootdowns_and_accidents_during_the_Yugoslav_Wars",
       "source_url": "https://en.wikipedia.org/wiki/List_of_aviation_shootdowns_and_accidents_during_the_Yugoslav_Wars",
@@ -324049,7 +324058,7 @@
         "Anti-aircraft_artillery",
         "Surface-to-air_missile"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_aviation_shootdowns_and_accidents_during_the_Iraq_War",
       "source_url": "https://en.wikipedia.org/wiki/List_of_aviation_shootdowns_and_accidents_during_the_Iraq_War",
@@ -327361,7 +327370,7 @@
       "source_position": 1,
       "text": "This is a list of aviation shootdowns and accidents during the Libyan crisis . It includes helicopters , fixed-wing aircraft and drones (UAVs), and losses from the First Libyan Civil War (2011) , the Factional violence in Libya (2011–2014) , the Second Libyan Civil War (2014–2020) and the current post-civil war fighting.",
       "layout": "p",
-      "date": "2011",
+      "date": null,
       "raw_date": "This is a list of aviation shootdowns and accidents during the Libyan crisis . It includes helicopters , fixed-wing aircraft and drones (UAVs), and losses from the First Libyan Civil War (2011) , the Factional violence in Libya (2011–2014) , the Second Libyan Civil War (2014–2020) and the current post-civil war fighting.",
       "section": "",
       "links": [
@@ -327373,12 +327382,12 @@
         "Factional_violence_in_Libya_(2011–2014)",
         "Libyan_civil_war_(2014–2020)"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_aviation_shootdowns_and_accidents_during_the_Libyan_crisis",
       "source_url": "https://en.wikipedia.org/wiki/List_of_aviation_shootdowns_and_accidents_during_the_Libyan_crisis",
       "revision": 1353515482,
-      "status": "matched",
+      "status": "needs_review",
       "event_ids": [
         "cfbd38c394bd0c715970"
       ],
@@ -327393,6 +327402,7 @@
       "categories": [
         "civil"
       ],
+      "reason": "multiple_event_dates_in_one_entry; published record exists but this entry is not certified",
       "location_reasons": [
         "No event-specific impact coordinates established"
       ]
@@ -355321,13 +355331,13 @@
       "source_position": 24,
       "text": "AH-1 Cobra Accidents: Four fatal accidents involving AH-1 Cobra helicopters occurred, including crashes due to technical failure in 1987, 1998, and 2008. [ 16 ]",
       "layout": "li",
-      "date": "1987",
+      "date": null,
       "raw_date": "AH-1 Cobra Accidents: Four fatal accidents involving AH-1 Cobra helicopters occurred, including crashes due to technical failure in 1987, 1998, and 2008. [ 16 ]",
       "section": "Helicopter_accidents",
       "links": [
         "Bell_AH-1_Cobra"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_Israeli_Air_Force_training_accidents",
       "source_url": "https://en.wikipedia.org/wiki/List_of_Israeli_Air_Force_training_accidents#Helicopter_accidents",
@@ -355494,13 +355504,13 @@
       "source_position": 1,
       "text": "Many hundreds of fatal accidents and incidents involving military aircraft operated by the Royal Air Force have occurred since 1945, the great majority of them before the end of the Cold War. They are grouped by the year in which the accident or incident occurred. Combat losses and aircraft operated by experimental establishments not on RAF strength are not included. This is a very far from complete list: for example a total of 890 Gloster Meteors were lost in RAF service (145 of these crashes occurring in 1953 alone), resulting in the deaths of some 450 pilots.",
       "layout": "p",
-      "date": "1945",
+      "date": null,
       "raw_date": "Many hundreds of fatal accidents and incidents involving military aircraft operated by the Royal Air Force have occurred since 1945, the great majority of them before the end of the Cold War. They are grouped by the year in which the accident or incident occurred. Combat losses and aircraft operated by experimental establishments not on RAF strength are not included. This is a very far from complete list: for example a total of 890 Gloster Meteors were lost in RAF service (145 of these crashes occurring in 1953 alone), resulting in the deaths of some 450 pilots.",
       "section": "",
       "links": [
         "Royal_Air_Force"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_fatal_accidents_and_incidents_involving_Royal_Air_Force_aircraft_from_1945",
       "source_url": "https://en.wikipedia.org/wiki/List_of_fatal_accidents_and_incidents_involving_Royal_Air_Force_aircraft_from_1945",
@@ -362516,7 +362526,7 @@
         "1996_Air_Africa_Antonov_An-32_crash",
         "Kinshasa"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_aircraft_accidents_and_incidents_by_number_of_ground_fatalities",
       "source_url": "https://en.wikipedia.org/wiki/List_of_aircraft_accidents_and_incidents_by_number_of_ground_fatalities#History",
@@ -387898,12 +387908,12 @@
         "German_occupation_of_the_Channel_Islands",
         "Guernsey_Airport"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_aviation_accidents_and_incidents_in_the_Channel_Islands",
       "source_url": "https://en.wikipedia.org/wiki/List_of_aviation_accidents_and_incidents_in_the_Channel_Islands#1940s",
       "revision": 1357030782,
-      "status": "matched",
+      "status": "needs_review",
       "event_ids": [
         "fb2566c26697478531e2"
       ],
@@ -387918,6 +387928,7 @@
       "categories": [
         "civil"
       ],
+      "reason": "multiple_event_dates_in_one_entry; published record exists but this entry is not certified",
       "location_reasons": [
         "No event-specific impact coordinates established"
       ]
@@ -397694,7 +397705,7 @@
       "source_position": 1,
       "text": "The deadliest crash was El Al Flight 1862 with 43 deaths. More military airplanes crashed than other kind of airplanes. Most of the military airplane crashes occurred in the Netherlands during World War II , with a total of around 6,000 airplanes. [ 1 ] While during World War I the Netherlands was neutral, some airships crashed in the country. After World War II, over 10 military airplanes crashed each year (note that the list is incomplete) in the 1950s. [ 2 ] The deadliest accident with a military airplane was the 1946 Apeldoorn aircraft crash with a total of 24 deaths. [ 3 ] In 1980 the Dutch army bought their firsts F-16 fighters. In 1993 the Netherlands' 29th F-16 crashed (note that not all of these F-16s crashed in the Netherlands). [ 4 ]",
       "layout": "p",
-      "date": "1862",
+      "date": null,
       "raw_date": "The deadliest crash was El Al Flight 1862 with 43 deaths. More military airplanes crashed than other kind of airplanes. Most of the military airplane crashes occurred in the Netherlands during World War II , with a total of around 6,000 airplanes. [ 1 ] While during World War I the Netherlands was neutral, some airships crashed in the country. After World War II, over 10 military airplanes crashed each year (note that the list is incomplete) in the 1950s. [ 2 ] The deadliest accident with a military airplane was the 1946 Apeldoorn aircraft crash with a total of 24 deaths. [ 3 ] In 1980 the Dutch army bought their firsts F-16 fighters. In 1993 the Netherlands' 29th F-16 crashed (note that not all of these F-16s crashed in the Netherlands). [ 4 ]",
       "section": "",
       "links": [
@@ -397704,33 +397715,13 @@
         "1946_Apeldoorn_aircraft_crash",
         "F-16"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_aviation_accidents_and_incidents_in_the_Netherlands",
       "source_url": "https://en.wikipedia.org/wiki/List_of_aviation_accidents_and_incidents_in_the_Netherlands",
       "revision": 1356765328,
       "status": "needs_review",
-      "event_ids": [
-        "9a95d97984752fe4bb58"
-      ],
-      "mapped": false,
-      "article_enriched": false,
-      "record_names": [
-        "El Al Flight 1862"
-      ],
-      "types": [
-        "crash"
-      ],
-      "categories": [
-        "civil"
-      ],
-      "reason": "linked_article_describes_a_different_event_year; event subject needs verification",
-      "linked_article_dates": [
-        "1992-10-04"
-      ],
-      "location_reasons": [
-        "No event-specific impact coordinates established"
-      ]
+      "reason": "multiple_event_dates_in_one_entry"
     },
     {
       "entry_id": "bc368daf1f41ffa2bc8a88bd",
@@ -405803,7 +405794,7 @@
         "T-38_Talon",
         "Sikorsky_SH-3_Sea_King"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_accidents_and_incidents_involving_the_Lockheed_C-130_Hercules",
       "source_url": "https://en.wikipedia.org/wiki/List_of_accidents_and_incidents_involving_the_Lockheed_C-130_Hercules",
@@ -409745,12 +409736,12 @@
         "Évreux-Fauville_Air_Base",
         "Spangdahlem_Air_Base"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_accidents_and_incidents_involving_the_Lockheed_C-130_Hercules",
       "source_url": "https://en.wikipedia.org/wiki/List_of_accidents_and_incidents_involving_the_Lockheed_C-130_Hercules#1960s",
       "revision": 1376911788,
-      "status": "matched",
+      "status": "needs_review",
       "event_ids": [
         "22099a301ee9fe9766ea"
       ],
@@ -409765,6 +409756,7 @@
       "categories": [
         "civil"
       ],
+      "reason": "multiple_event_dates_in_one_entry; published record exists but this entry is not certified",
       "location_reasons": [
         "No event-specific impact coordinates established"
       ]
@@ -431870,13 +431862,13 @@
       "source_position": 1,
       "text": "The following is a partial and unofficial list of helicopter and airplane crashes, accidents and shootdowns that occurred during the Soviet–Afghan War of 1979–1989. In total, at least 333 helicopters and 118 Soviet jets were reported lost during the war. [ 1 ]",
       "layout": "p",
-      "date": "1979",
+      "date": null,
       "raw_date": "The following is a partial and unofficial list of helicopter and airplane crashes, accidents and shootdowns that occurred during the Soviet–Afghan War of 1979–1989. In total, at least 333 helicopters and 118 Soviet jets were reported lost during the war. [ 1 ]",
       "section": "",
       "links": [
         "Soviet–Afghan_War"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_Soviet_aircraft_losses_in_Afghanistan",
       "source_url": "https://en.wikipedia.org/wiki/List_of_Soviet_aircraft_losses_in_Afghanistan",
@@ -435760,7 +435752,7 @@
         "MiG-29",
         "Termez_Airport"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_Soviet_aircraft_losses_in_Afghanistan",
       "source_url": "https://en.wikipedia.org/wiki/List_of_Soviet_aircraft_losses_in_Afghanistan#Non-Soviet_losses",
@@ -449590,7 +449582,7 @@
       "source_position": 1,
       "text": "Of the airline's twenty-three major accidents and incidents, four have resulted in the loss of life. The first was the 1948 Northwood mid-air collision over London , with which 39 fatalities made it the deadliest accident in the United Kingdom at the time. In the 1960 Flight 871 to Istanbul , the aircraft descended too early, resulting in 42 people perishing in the first accident of the Sud Aviation Caravelle . The same cause was responsible nine years later in Los Angeles , when 15 people were killed in Flight 933 . The final and most deadly accident was Flight 686 , where 114 people were killed in a runway collision in Milan in 2001. [ 3 ]",
       "layout": "p",
-      "date": "1948",
+      "date": null,
       "raw_date": "Of the airline's twenty-three major accidents and incidents, four have resulted in the loss of life. The first was the 1948 Northwood mid-air collision over London , with which 39 fatalities made it the deadliest accident in the United Kingdom at the time. In the 1960 Flight 871 to Istanbul , the aircraft descended too early, resulting in 42 people perishing in the first accident of the Sud Aviation Caravelle . The same cause was responsible nine years later in Los Angeles , when 15 people were killed in Flight 933 . The final and most deadly accident was Flight 686 , where 114 people were killed in a runway collision in Milan in 2001. [ 3 ]",
       "section": "",
       "links": [
@@ -449604,7 +449596,7 @@
         "Linate_Airport_disaster",
         "Milan"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_Scandinavian_Airlines_accidents_and_incidents",
       "source_url": "https://en.wikipedia.org/wiki/List_of_Scandinavian_Airlines_accidents_and_incidents",
@@ -449634,7 +449626,7 @@
         "Dash_8_landing_gear_incidents",
         "Bombardier_Dash_8"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_Scandinavian_Airlines_accidents_and_incidents",
       "source_url": "https://en.wikipedia.org/wiki/List_of_Scandinavian_Airlines_accidents_and_incidents",
@@ -449654,7 +449646,7 @@
       "categories": [
         "civil"
       ],
-      "reason": "linked_article_describes_a_different_event_year; event subject needs verification",
+      "reason": "multiple_event_dates_in_one_entry; published record exists but this entry is not certified",
       "linked_article_dates": [
         "1972-09-16"
       ],
@@ -471149,12 +471141,12 @@
       "links": [
         "Boeing_727"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_accidents_and_incidents_involving_the_Boeing_727",
       "source_url": "https://en.wikipedia.org/wiki/List_of_accidents_and_incidents_involving_the_Boeing_727",
       "revision": 1369091413,
-      "status": "matched",
+      "status": "needs_review",
       "event_ids": [
         "8cb5dd17ff5082fa7085"
       ],
@@ -471169,6 +471161,7 @@
       "categories": [
         "civil"
       ],
+      "reason": "multiple_event_dates_in_one_entry; published record exists but this entry is not certified",
       "location_reasons": [
         "No event-specific impact coordinates established"
       ]
@@ -474769,7 +474762,7 @@
         "World_Trade_Center_(1973–2001)",
         "Collapse_of_the_World_Trade_Center"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_aircraft_accidents_and_incidents_resulting_in_at_least_50_fatalities",
       "source_url": "https://en.wikipedia.org/wiki/List_of_aircraft_accidents_and_incidents_resulting_in_at_least_50_fatalities#History",
@@ -502749,13 +502742,13 @@
       "source_position": 572,
       "text": "Gero, David (2006). Aviation Disasters: The World's Major Civil Airliner Crashes Since 1950 (4th ed.). London: J.H. Haynes & Co. Ltd. ISBN 0-7509-3146-9 .",
       "layout": "li",
-      "date": "2006",
+      "date": null,
       "raw_date": "Gero, David (2006). Aviation Disasters: The World's Major Civil Airliner Crashes Since 1950 (4th ed.). London: J.H. Haynes & Co. Ltd. ISBN 0-7509-3146-9 .",
       "section": "Books",
       "links": [
         "ISBN_(identifier)"
       ],
-      "review_reason": null,
+      "review_reason": "multiple_event_dates_in_one_entry",
       "fields": {},
       "source_title": "List_of_aircraft_accidents_and_incidents_resulting_in_at_least_50_fatalities",
       "source_url": "https://en.wikipedia.org/wiki/List_of_aircraft_accidents_and_incidents_resulting_in_at_least_50_fatalities#Books",

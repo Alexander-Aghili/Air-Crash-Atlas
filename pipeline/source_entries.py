@@ -27,6 +27,8 @@ def source_entry(source, text):
 
 def date_text(text, year=None):
     text = normalize(text)
+    # Flight identifiers are not calendar years, even when they have four digits.
+    text = re.sub(r'\bflight\s+\d+\b', 'flight', text, flags=re.I)
     # A leading event date and its year heading outrank later recovery dates,
     # citation years, flight numbers, and other four-digit numbers in the prose.
     leading = re.match(r"^(?:On |In )?((?:\d{1,2}\s+[A-Z][a-z]+(?:\s+(?:18|19|20)\d{2})?|[A-Z][a-z]+\s+(?:18|19|20)\d{2}|[A-Z][a-z]+\s+\d{1,2}(?!\d)(?:,?\s+(?:18|19|20)\d{2})?|(?:18|19|20)\d{2}-\d{2}-\d{2}|(?:18|19|20)\d{2}))\b", text)
@@ -48,6 +50,8 @@ def date_text(text, year=None):
     if month:
         from datetime import datetime
         return datetime.strptime(month[0], '%B %Y').strftime('%Y-%m')
+    if len(set(YEAR.findall(text))) > 1:
+        return None
     found = YEAR.search(text)
     if found:
         return found[0]
@@ -191,6 +195,8 @@ def enumerate_entries(html, title):
             # A paragraph describing several losses is not one event.
             dates = re.findall(r'\b\d{1,2}\s+[A-Z][a-z]+\s+(?:18|19|20)\d{2}\b|\b[A-Z][a-z]+\s+\d{1,2},?\s+(?:18|19|20)\d{2}\b', text)
             if len(set(dates)) > 1:
+                reason = 'multiple_event_dates_in_one_entry'
+            elif not dated_prefix and len(set(YEAR.findall(re.sub(r'\bflight\s+\d+\b', '', text, flags=re.I)))) > 1:
                 reason = 'multiple_event_dates_in_one_entry'
         else:
             continue
