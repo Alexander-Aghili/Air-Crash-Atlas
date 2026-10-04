@@ -90,7 +90,7 @@ export class CrashApplication {
     if(p.source_locator)inner.append(node('p',`List entry: ${p.source_locator}`,'detail-summary'));box.append(inner);box.scrollTop=0;$('detail-dialog').scrollTop=0;
     if(!$('detail-dialog').open)$('detail-dialog').show();$('close-detail').focus();
   }
-  closeDetail(){ $('detail-dialog').close();this.selected=null;this.saveState();this.results.render();$('search').focus(); }
+  closeDetail(){ $('detail-dialog').close();this.selected=null;this.saveState();this.results.render();const target=matchMedia('(max-width:760px)').matches?$('mobile-'+(document.body.dataset.mobileView||'map')):$('search');target.focus({preventScroll:true}); }
   setMobileView(view){
     document.body.dataset.mobileView=view;
     for(const name of ['map','records','filters'])$('mobile-'+name).setAttribute('aria-pressed',String(name===view));
