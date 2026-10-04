@@ -9,7 +9,7 @@ export class CrashCatalog {
   filter({query='',state='',quality='',category='',categories=null,type='',from='',to='',aircraft='',media='',scope='all',decades=null,aircraftGroup=''}={}) {
     return this.features.filter(f=>{
       const p=f.properties,year=Number(p.date.slice(0,4));
-      const site=!!f.geometry && p.location_kind==='impact site' && (type || ['crash','collision','combat loss'].includes(p.event_type));
+      const site=!!f.geometry && ['impact site','event site'].includes(p.location_kind);
       return (decades===null || decades.includes(Math.floor(year/10)*10)) && (!aircraftGroup || aircraftGroups(p).includes(aircraftGroup)) && (scope!=='sites'||site) && (!query||this.searchIndex.get(f.id).includes(query.toLowerCase())) && (!state||p.state===state) && (!quality||p.location_quality===quality) && (!category||p.civil_or_military===category) && (categories===null||categories.includes(p.civil_or_military)) && (!type||p.event_type===type) && (!from||year>=Number(from)) && (!to||year<=Number(to)) && (!aircraft||[JSON.stringify(p.aircraft),p.description||''].join(' ').toLowerCase().includes(aircraft.toLowerCase())) && (!media || (media==='images' ? !!p.images?.length : (p.media||[]).some(m=>media==='any'||m.kind===media)));
     });
   }

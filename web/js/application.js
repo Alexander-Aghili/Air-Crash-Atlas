@@ -6,7 +6,7 @@ import { CrashMap } from './map.js';
 import { PAGE_SIZE } from './constants.js';
 const FILTERS=['search','state','quality','event-type','year-from','year-to','aircraft','media','aircraft-group'];
 export class CrashApplication {
-  constructor(){this.visible=[];this.limit=PAGE_SIZE;this.selected=null;this.scope='sites';this.updating=false;this.decades=null;this.mapView=new CrashMap(this);this.results=new ResultsView(this);}
+  constructor(){this.visible=[];this.limit=PAGE_SIZE;this.selected=null;this.scope='all';this.updating=false;this.decades=null;this.mapView=new CrashMap(this);this.results=new ResultsView(this);}
   get features(){return this.catalog?.features||[];}
   message(text){$('map-error-text').textContent=text;$('map-error').hidden=false;}
   saveState(){
@@ -16,7 +16,7 @@ export class CrashApplication {
     const categories=[...($('commercial-enabled').checked?['civil']:[]),...($('military-enabled').checked?['military']:[])];
     if(categories.length!==2)p.set('categories',categories.join(','));
     if(this.decades!==null)p.set('decades',this.decades.join(','));
-    if(this.scope==='all')p.set('scope','all');if($('in-view').checked)p.set('inview','1');if(this.selected)p.set('event',this.selected);
+    p.set('scope',this.scope);if($('in-view').checked)p.set('inview','1');if(this.selected)p.set('event',this.selected);
     if(this.mapView.activeLayer==='satellite')p.set('layer','satellite');
     if(this.mapView.map){const c=this.mapView.map.getCenter();p.set('lat',c.lat.toFixed(4));p.set('lon',c.lng.toFixed(4));p.set('z',this.mapView.map.getZoom());}
     history.replaceState(null,'',`${location.pathname}${p.size?'?'+p:''}`);
@@ -28,7 +28,7 @@ export class CrashApplication {
     const bounds=this.mapView.map?.getBounds();this.visible=matching.filter(f=>!$('in-view').checked||!bounds||sitePoints(f).some(g=>bounds.contains([g.coordinates[1],g.coordinates[0]])));
     if(updateMap&&this.mapView.clusters){this.mapView.clusters.clearLayers();this.mapView.clusters.addLayers(matching.filter(f=>f.geometry).flatMap(f=>this.mapView.markers.get(f.id)||[]));}
     this.results.render();const mapped=this.visible.filter(f=>f.geometry).length,unlocated=this.visible.length-mapped;
-    $('status').textContent=this.scope==='sites'?`${num(mapped)} ${mapped===1?'crash':'crashes'} on the map`:`${num(this.visible.length)} records · ${num(unlocated)} without coordinates`;
+    $('status').textContent=this.scope==='sites'?`${num(mapped)} ${mapped===1?'event':'events'} on the map`:`${num(this.visible.length)} records · ${num(unlocated)} without coordinates`;
     this.saveState();
   }
   restore(){
@@ -38,7 +38,7 @@ export class CrashApplication {
     $('commercial-enabled').checked=categories.includes('civil');$('military-enabled').checked=categories.includes('military');
     $('color-by').value=['fatalities','year','none'].includes(p.get('color'))?p.get('color'):'fatalities';
     this.decades=p.has('decades')?p.get('decades').split(',').filter(Boolean).map(Number).filter(d=>this.availableDecades.includes(d)):null;this.syncDecades();this.mapView.updateAppearance();
-    this.setScope(p.get('scope')==='all'||p.get('quality')==='missing'?'all':'sites');$('in-view').checked=p.get('inview')==='1';
+    this.setScope(p.get('scope')==='sites'&&p.get('quality')!=='missing'?'sites':'all');$('in-view').checked=p.get('inview')==='1';
     const lat=Number(p.get('lat')),lon=Number(p.get('lon')),z=Number(p.get('z'));
     if(this.mapView.map&&p.has('lat')&&p.has('lon')&&p.has('z')&&Number.isFinite(lat)&&Number.isFinite(lon)&&Math.abs(lat)<=85&&Math.abs(lon)<=180&&z>=2&&z<=19)this.mapView.map.setView([lat,lon],z);
     this.mapView.setLayer(p.get('layer'));this.updating=false;
@@ -68,7 +68,7 @@ export class CrashApplication {
     const countries=[...new Set(this.features.map(f=>f.properties.state))].sort();for(const country of countries){const option=node('option',country);option.value=country;$('state').append(option);}
     $('total-stat').textContent=num(this.features.length);$('mapped-stat').textContent=num(this.features.filter(f=>f.geometry).length);
     const date=new Date(meta.generated_at).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});$('refresh').textContent=`Updated ${date} · ${num(meta.unlocated)} records without coordinates`;
-    $('coverage').textContent=`${num(meta.total)} records: ${num(meta.mapped)} mapped and ${num(meta.unlocated)} without crash-site coordinates.`;
+    $('coverage').textContent=`${num(meta.total)} records: ${num(meta.mapped)} mapped and ${num(meta.unlocated)} without event-site coordinates.`;
   }
   showDetail(f){
     this.selected=f.id;this.saveState();this.results.render();const p=f.properties,box=$('detail-content');box.replaceChildren();
@@ -77,12 +77,12 @@ export class CrashApplication {
     const inner=node('div','','detail-inner');inner.append(node('span',`${p.date} / ${p.civil_or_military.toUpperCase()} / ${p.event_type.toUpperCase()}`,'eyebrow'),node('h2',p.name));
     if(p.description)inner.append(node('p',p.description,'detail-summary'));
     const actions=node('div','','detail-actions');actions.append(link('Read Wikipedia ↗',p.article_url||p.source_url));if(images.length)actions.append(link('View image & credits ↗',images[0].url));
-    if(f.geometry){const locate=node('button','Show crash site ⤢');locate.onclick=()=>this.mapView.locate(f);actions.append(locate);}inner.append(actions);
+    if(f.geometry){const locate=node('button','Show event location ⤢');locate.onclick=()=>this.mapView.locate(f);actions.append(locate);}inner.append(actions);
     const evidence=node('section','','evidence-card');evidence.append(node('h3',siteLabel(f).toUpperCase()),node('strong',p.location_text));
     for(const g of sitePoints(f)){const [lon,lat]=g.coordinates;evidence.append(node('span',`${lat.toFixed(5)}°, ${lon.toFixed(5)}°`,'coordinates'));}
-    if(p.evidence?.method)evidence.append(node('p',p.evidence.method.startsWith('Event-specific coordinates')?'Wikipedia provides these crash-site coordinates. They have not been independently verified.':p.evidence.method));if(p.uncertainty?.description)evidence.append(node('p',p.uncertainty.description));if(p.uncertainty?.radius_m)evidence.append(node('p',`Source uncertainty: ${p.uncertainty.radius_m} m`));inner.append(evidence);
+    if(p.evidence?.method)evidence.append(node('p',p.evidence.method.startsWith('Event-specific coordinates')?'Wikipedia provides these event-site coordinates. They have not been independently verified.':p.evidence.method));if(p.uncertainty?.description)evidence.append(node('p',p.uncertainty.description));if(p.uncertainty?.radius_m)evidence.append(node('p',`Source uncertainty: ${p.uncertainty.radius_m} m`));inner.append(evidence);
     const facts=node('div','','detail-facts');
-    for(const [label,value] of [['AIRCRAFT',(p.aircraft||[]).map(a=>[a.type,a.registration,a.operator].filter(Boolean).join(' · ')).join(' / ')],['COUNTRY / AREA',p.state],['DATE',p.date],['EVENT',p.event_type],['FATALITIES',p.fatalities??'Not recorded']]){const item=node('div');item.append(node('small',label),node('span',value||'Not recorded'));facts.append(item);}inner.append(facts);
+    for(const [label,value] of [['AIRCRAFT',(p.aircraft||[]).map(a=>[a.type,a.registration,a.operator].filter(Boolean).join(' · ')).join(' / ')],['COUNTRY / AREA',p.state],['DATE',p.date],['EVENT',p.event_type],['WIKIPEDIA OCCURRENCE TYPE',p.occurrence_type],['FATALITIES',p.fatalities??'Not recorded']]){const item=node('div');item.append(node('small',label),node('span',value||'Not recorded'));facts.append(item);}inner.append(facts);
     if(images.length>1){inner.append(node('h3','Images','section-title'));const grid=node('div','','image-grid');for(const image of images){const a=link('',image.url);if(imageURL(image.thumbnail)){const img=document.createElement('img');img.src=imageURL(image.thumbnail);img.alt=image.caption;img.loading='lazy';img.onerror=()=>{img.hidden=true;};a.append(img);}a.setAttribute('aria-label',`${image.caption} — image and credits`);a.append(node('span',image.caption+' ↗'));grid.append(a);}inner.append(grid);}
     if(images.length)inner.append(node('p','Images may show the aircraft, crash site, or aftermath. Open an image for credits and its license.','detail-summary'));
     inner.append(node('h3','Sources','section-title'));const sources=node('ul','','source-list');
@@ -115,7 +115,7 @@ export class CrashApplication {
     $('decade-picker').addEventListener('keydown',e=>{if(e.key==='Escape'){$('decade-picker').open=false;$('decade-summary').focus();}});
     $('in-view').onchange=()=>this.resetResults();$('more').onclick=()=>{this.limit+=PAGE_SIZE;this.results.render();};
     for(const scope of ['sites','all'])$('scope-'+scope).onclick=()=>{this.setScope(scope);if(scope==='sites'&&$('quality').value==='missing')$('quality').value='';this.resetResults();};
-    $('reset').onclick=()=>{for(const id of FILTERS)$(id).value='';$('in-view').checked=false;$('commercial-enabled').checked=true;$('military-enabled').checked=true;this.decades=null;this.syncDecades();$('color-by').value='fatalities';this.mapView.updateAppearance();this.setScope('sites');this.resetResults();};
+    $('reset').onclick=()=>{for(const id of FILTERS)$(id).value='';$('in-view').checked=false;$('commercial-enabled').checked=true;$('military-enabled').checked=true;this.decades=null;this.syncDecades();$('color-by').value='fatalities';this.mapView.updateAppearance();this.setScope('all');this.resetResults();};
     $('street').onclick=()=>this.mapView.setLayer('map');$('satellite').onclick=()=>this.mapView.setLayer('satellite');$('fit').onclick=()=>this.mapView.fit();
     $('view').onchange=()=>{if($('view').value==='all'){this.mapView.fit();return;}const views={world:[[20,0],2],us:[[38,-98],4],europe:[[50,15],4],asia:[[25,100],3]};const [center,zoom]=views[$('view').value];this.mapView.map?.setView(center,zoom);};window.addEventListener('popstate',()=>this.restore());
   }

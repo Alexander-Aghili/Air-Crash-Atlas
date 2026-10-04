@@ -12,4 +12,4 @@ export function imageURL(value) { const safe=safeURL(value);return safe && ['upl
 export function node(tag,text='',className='') { const el=document.createElement(tag);el.textContent=text;el.className=className;return el; }
 export function sourceLink(p) { return link(`${p.name} ↗`,p.source_url,'result-title'); }
 export function sitePoints(f) { return f.geometry ? (f.properties.site_geometries?.length ? f.properties.site_geometries : [f.geometry]) : []; }
-export const siteLabel=f=>['incident','ground incident'].includes(f.properties.event_type)?'Incident — no crash site':!f.geometry?'No crash-site coordinates':f.properties.location_quality==='approximate'?'Approximate crash site':'Coordinates from Wikipedia';
+export const siteLabel=f=>!f.geometry?'No event-site coordinates':f.properties.location_kind==='event site'?'Event location from Wikipedia':f.properties.location_quality==='approximate'?'Approximate crash site':'Coordinates from Wikipedia';

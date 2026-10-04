@@ -188,17 +188,8 @@ def publish(records, report):
             re.I,
         ):
             p["event_type"] = "incident"
-        if p["event_type"] in ["incident", "ground incident"] and record["geometry"]:
-            record["geometry"] = None
-            p.pop("site_geometries", None)
-            p.update(
-                location_quality="missing",
-                location_kind="unknown",
-                evidence={
-                    "method": "Incident location described by the source; no crash impact point is asserted.",
-                    "source_url": p.get("article_url", p["source_url"]),
-                },
-            )
+            if record["geometry"]:
+                p["location_kind"] = "event site"
     validate(records)
     from pipeline.audit import audit, write_report
     entry_audit = audit(records, Fetcher(offline=True), report.get("enrichment"))

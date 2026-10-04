@@ -160,6 +160,7 @@ def article(html, title, source, fallback_date=None):
     raw_fields = {}
     aircraft = []
     aircraft_context = False
+    occurrence_type = ""
     if box:
         for row in box.select("tr"):
             header = row.find(class_="infobox-header")
@@ -167,6 +168,8 @@ def article(html, title, source, fallback_date=None):
                 r"aircraft", header.get_text(" ", strip=True), re.I
             ):
                 aircraft_context = True
+            if header and header.get_text(" ", strip=True).lower() in {"accident", "incident", "hijacking", "shootdown"}:
+                occurrence_type = header.get_text(" ", strip=True)
             h = row.find(class_="infobox-label") or row.find("th")
             td = row.find(class_="infobox-data") or row.find("td")
             if not h or not td:
@@ -225,6 +228,8 @@ def article(html, title, source, fallback_date=None):
         impact_text,
         re.I,
     )
+    if near_miss:
+        impact = None
     non_impact = re.search(
         r"hijack|turbulence|fuel dumping|decompression|door plug|uncontained engine failure|loss of cabin pressure",
         summary_text,
@@ -248,6 +253,16 @@ def article(html, title, source, fallback_date=None):
         and not re.search(r"crashed|crash-landed|ditched|collided|overran", lead, re.I)
     ):
         p["event_type"] = "incident"
+    occurrence_field = fields.get("occurrence type")
+    if occurrence_field:
+        occurrence_type = occurrence_field.get_text(" ", strip=True)
+    if occurrence_type:
+        p["occurrence_type"] = occurrence_type.lower()
+        p["raw_infobox"]["occurrence type"] = occurrence_type
+        if occurrence_type.lower() == "incident" or (occurrence_type.lower() == "hijacking" and not impact):
+            p["event_type"] = "incident"
+        elif occurrence_type.lower() == "accident" and not impact and p["event_type"] != "disappearance":
+            p["event_type"] = "accident"
     p["images"] = extract_images(soup, box, source)
     p["article_titles"] = [title]
     p["article_url"] = source["url"]
@@ -282,15 +297,15 @@ def article(html, title, source, fallback_date=None):
         if (
             pts
             and not invalid
-            and p["event_type"] not in ["disappearance", "incident", "ground incident"]
+            and p["event_type"] != "disappearance"
         ):
             r["geometry"] = pts[0]
             p["site_geometries"] = pts
             p.update(
-                location_kind="impact site",
+                location_kind="impact site" if impact and p["event_type"] not in ["incident", "ground incident"] else "event site",
                 location_quality="source supplied",
                 evidence={
-                    "method": "Event-specific coordinates in the accident infobox Site field. No airport, town, memorial, or general article coordinates substituted.",
+                    "method": "Event-specific coordinates in the aviation occurrence infobox Site field. No airport, town, memorial, or general article coordinates substituted.",
                     "source_url": source["url"],
                     "revision": source.get("revision"),
                     "retrieved_at": source.get("retrieved_at"),

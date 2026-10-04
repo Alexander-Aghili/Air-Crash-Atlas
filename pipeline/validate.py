@@ -19,10 +19,8 @@ def validate(records):
                 and not u.password
             )
         if f["geometry"]:
-            assert p["event_type"] not in [
-                "incident",
-                "ground incident",
-            ], "Non-crash incident cannot supply a crash impact marker"
+            if p["event_type"] in ["incident", "ground incident", "accident"]:
+                assert p["location_kind"] == "event site", "Non-impact event must not claim an impact site"
             assert f["geometry"]["type"] == "Point"
             lon, lat = f["geometry"]["coordinates"]
             assert (
@@ -33,6 +31,7 @@ def validate(records):
             )
             assert p["location_kind"] in [
                 "impact site",
+                "event site",
                 "approximate area",
                 "last-known position",
             ]

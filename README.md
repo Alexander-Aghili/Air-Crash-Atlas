@@ -1,6 +1,6 @@
 # Aviation Crash Atlas
 
-A static Leaflet map of plane crashes with search, filters, Wikipedia links, and images. Mapped crashes shows records with crash-site coordinates. All records includes records without coordinates and incidents. Search accepts dates and terms such as `9/11` or `September 11`.
+A static Leaflet map of plane crashes with search, filters, Wikipedia links, and images. Mapped events shows accidents and incidents with coordinates from Wikipedia’s infobox Site field. All records is the default and includes events without coordinates. Wikipedia’s explicit occurrence type is retained separately from the physical event description. Search accepts dates and terms such as `9/11` or `September 11`.
 
 ## Run
 

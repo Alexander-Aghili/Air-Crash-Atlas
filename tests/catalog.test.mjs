@@ -9,3 +9,12 @@ test('crash site scope excludes unresolved records',()=>{data.features[1].proper
 test('September 11 aliases and dates find all four crash records',()=>{const records=['American Airlines Flight 11','American Airlines Flight 77','United Airlines Flight 175','United Airlines Flight 93'].map((name,i)=>({id:String(i),geometry:{type:'Point',coordinates:[-74,40]},properties:{name,date:'2001-09-11',search_aliases:['9/11','September 11 attacks'],location_kind:'impact site',event_type:'crash',aircraft:[]}}));const c=new CrashCatalog({type:'FeatureCollection',features:records});for(const query of ['9/11','September 11','2001-09-11'])assert.equal(c.filter({query,scope:'sites'}).length,4)});
 
 test('aviation categories can be enabled independently or both disabled',()=>{const c=new CrashCatalog(data);assert.equal(c.filter({categories:['civil','military']}).length,2);assert.deepEqual(c.filter({categories:['military']}).map(f=>f.id),['a']);assert.deepEqual(c.filter({categories:['civil']}).map(f=>f.id),['b']);assert.equal(c.filter({categories:[]}).length,0)});
+
+test('mapped scope includes source-located accidents and incidents consistently',()=>{
+  const features=['crash','accident','incident'].map((type,i)=>({id:String(i),geometry:{type:'Point',coordinates:[0,0]},properties:{name:`Event ${i}`,date:'2023-10-22',event_type:type,location_kind:type==='crash'?'impact site':'event site',aircraft:[]}}));
+  features.push({id:'unlocated',geometry:null,properties:{name:'Unlocated incident',date:'2023-10-22',event_type:'incident',location_kind:'unknown',aircraft:[]}});
+  const catalog=new CrashCatalog({type:'FeatureCollection',features});
+  assert.equal(catalog.filter({scope:'sites'}).length,3);
+  assert.equal(catalog.filter({scope:'all'}).length,4);
+  assert.equal(catalog.filter({scope:'sites',type:'incident'}).length,1);
+});

@@ -363,6 +363,7 @@ def reconcile(records):
                 ep["source_locator"] = p["source_locator"]
             if (
                 not existing["geometry"]
+                and "raw_infobox" not in ep
                 and record["geometry"]
                 and not ep.get("override_location")
             ):
@@ -396,6 +397,8 @@ def reconcile(records):
                 if not any(old["url"] == img["url"] for old in ep.get("images", []))
             )
             for field in [
+                "occurrence_type",
+                "raw_infobox",
                 "search_aliases",
                 "site_geometries",
                 "article_url",

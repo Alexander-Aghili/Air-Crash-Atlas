@@ -230,13 +230,15 @@ class NonImpactTests(unittest.TestCase):
             html = f'<table class="infobox"><tr><th>Date</th><td>1954-01-10</td></tr><tr><th>Summary</th><td>{summary}</td></tr><tr><th>Site</th><td>Mediterranean Sea off Elba <span class="geo">42.67833; 10.42722</span></td></tr></table>'
             row = article(html, "BOAC Flight 781", SOURCE)
             self.assertEqual(row["properties"]["event_type"], expected)
-            self.assertEqual(row["geometry"] is not None, expected == "crash")
+            self.assertIsNotNone(row["geometry"])
+            self.assertEqual(row["properties"]["location_kind"], "impact site" if expected == "crash" else "event site")
 
-    def test_near_crash_has_no_impact_point(self):
+    def test_near_crash_uses_event_site_without_impact_claim(self):
         html = '<table class="infobox"><tr><th>Date</th><td>1981-02-20</td></tr><tr><th>Summary</th><td>Near crash into North Tower due to unauthorized descent</td></tr><tr><th>Site</th><td>North Tower <span class="geo">40.7; -74</span></td></tr></table>'
         row = article(html, "Aerolíneas Argentinas Flight 342", SOURCE)
         self.assertEqual(row["properties"]["event_type"], "incident")
-        self.assertIsNone(row["geometry"])
+        self.assertIsNotNone(row["geometry"])
+        self.assertEqual(row["properties"]["location_kind"], "event site")
 
 
 class SourceDataTests(unittest.TestCase):
@@ -343,8 +345,42 @@ class AircraftSectionTests(unittest.TestCase):
         )
         self.assertEqual(r["properties"]["civil_or_military"], "military")
 
-    def test_engine_failure_with_safe_landing_has_no_crash_marker(self):
+    def test_engine_failure_with_safe_landing_uses_event_site(self):
         html = '<div class="mw-parser-output"><table class="infobox"><tr><th>Date</th><td>2021-02-20</td></tr><tr><th>Summary</th><td>Engine failure caused by metal fatigue</td></tr><tr><th>Fatalities</th><td>0</td></tr><tr><th>Site</th><td>Over Colorado <span class="geo">40; -105</span></td></tr></table><p>The flight suffered an engine failure after takeoff and returned safely to the airport.</p></div>'
         r = article(html, "Test_Flight_328", SOURCE)
         self.assertEqual(r["properties"]["event_type"], "incident")
-        self.assertIsNone(r["geometry"])
+        self.assertIsNotNone(r["geometry"])
+        self.assertEqual(r["properties"]["location_kind"], "event site")
+
+class OccurrenceSelectionTests(unittest.TestCase):
+    def test_wikipedia_occurrence_heading_and_site_are_preserved(self):
+        for heading, summary, expected in [
+            ('Accident', 'Cargo door failure leading to explosive decompression', 'accident'),
+            ('Accident', 'Emergency landing following in-flight structural failure', 'accident'),
+            ('Incident', 'In-flight crew incident followed by aircraft diversion', 'incident'),
+            ('Incident', 'Emergency landing following landing gear malfunction', 'incident'),
+        ]:
+            html = f'<table class="infobox"><tr><th class="infobox-header" colspan="2">{heading}</th></tr><tr><th>Date</th><td>2005-09-21</td></tr><tr><th>Summary</th><td>{summary}</td></tr><tr><th>Site</th><td>Source event location <span class="geo">20.54; -156.28</span></td></tr></table>'
+            row = article(html, 'Example flight', SOURCE)
+            self.assertEqual(row['properties']['occurrence_type'], heading.lower())
+            self.assertEqual(row['properties']['event_type'], expected)
+            self.assertEqual(row['properties']['location_kind'], 'event site')
+            self.assertIsNotNone(row['geometry'])
+
+    def test_incident_without_site_coordinates_stays_searchable_without_marker(self):
+        html = '<table class="infobox"><tr><th class="infobox-header">Incident</th></tr><tr><th>Date</th><td>2023-10-22</td></tr><tr><th>Summary</th><td>Attempted sabotage, subsequent emergency landing</td></tr><tr><th>Site</th><td>In-air near a city</td></tr></table>'
+        row = article(html, 'Example flight', SOURCE)
+        self.assertEqual(row['properties']['event_type'], 'incident')
+        self.assertIsNone(row['geometry'])
+
+    def test_reparse_does_not_restore_old_marker_when_site_coordinates_are_absent(self):
+        from pipeline.extract import reconcile
+        from copy import deepcopy
+        html = '<table class="infobox"><tr><th class="infobox-header">Incident</th></tr><tr><th>Date</th><td>2023-10-22</td></tr><tr><th>Summary</th><td>Aircraft diversion</td></tr></table>'
+        current = article(html, 'Example flight', SOURCE)
+        stale = deepcopy(current)
+        stale['geometry'] = {'type': 'Point', 'coordinates': [0, 0]}
+        stale['properties'].update(location_kind='impact site', location_quality='source supplied')
+        result = reconcile([current, stale])
+        self.assertEqual(len(result), 1)
+        self.assertIsNone(result[0]['geometry'])
