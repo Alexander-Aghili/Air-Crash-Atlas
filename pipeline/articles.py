@@ -201,7 +201,14 @@ def article(html, title, source, fallback_date=None):
         return None
     operators = " ".join(a.get("operator", "") for a in aircraft)
     category_text = operators or lead
-    category = "military" if re.search(r"air force|navy|army|military|\bRAF\b|\bUSAF\b", category_text, re.I) else "civil"
+    military_operator = re.compile(r"air force|navy|army|military|\bRAF\b|\bUSAF\b", re.I)
+    operator_categories = {
+        "military" if military_operator.search(a["operator"]) else "civil"
+        for a in aircraft if a.get("operator") and not re.fullmatch(r"unknown|unidentified|not recorded", a["operator"], re.I)
+    }
+    # Publication includes any civilian participant, rather than discarding a
+    # whole collision because a different participant has a military operator.
+    category = "civil" if "civil" in operator_categories else "military" if military_operator.search(category_text) else "civil"
     r = event(
         title.replace("_", " "),
         date,
@@ -213,6 +220,8 @@ def article(html, title, source, fallback_date=None):
     p = r["properties"]
     p["description"] = summary_text or lead
     p["category_evidence"] = {"method": "article operator" if operators else "article opening paragraph", "text": category_text, "priority": 3 if operators else (2 if category == "military" or re.search(r"commercial|civilian|airliner|passenger flight", lead, re.I) else 0)}
+    if operator_categories:
+        p["participating_categories"] = sorted(operator_categories)
     p["raw_infobox"] = {key: values[0] if len(values) == 1 else values for key, values in raw_fields.items()}
     p["date_original"] = fields["date"].get_text(" ", strip=True) if fields.get("date") else (lead if date_text(lead) else fallback_date)
     impact_text = title.replace("_", " ") + " " + summary_text

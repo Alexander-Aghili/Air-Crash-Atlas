@@ -397,6 +397,7 @@ def reconcile(records):
             )
             for field in [
                 "occurrence_type",
+                "participating_categories",
                 "raw_infobox",
                 "search_aliases",
                 "site_geometries",

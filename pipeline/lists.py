@@ -108,8 +108,10 @@ def parse_flexible(html, title, source):
         row["properties"]["sources"].extend(references(node, soup))
         records.append(row)
 
-    for node in content.find_all(["h2", "h3", "h4", "li", "table"]):
-        if node.name.startswith("h"):
+    for node in content.find_all(["h2", "h3", "h4", "h5", "h6", "dt", "li", "table"]):
+        if node.name == "dt" and re.fullmatch(r"(?:18|19|20)\d{2}", node.get_text(" ", strip=True)):
+            year = node.get_text(" ", strip=True)
+        elif node.name.startswith("h"):
             heading = node.get_text(" ", strip=True)
             m = re.search(r"\b(18\d{2}|19\d{2}|20\d{2})\b", heading)
             if m:

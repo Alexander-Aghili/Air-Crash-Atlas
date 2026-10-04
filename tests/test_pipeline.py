@@ -333,7 +333,12 @@ class UpdateTests(unittest.TestCase):
         html = '<table class="infobox"><tr><th>Date</th><td>1957-01-31</td></tr><tr><th>Site</th><td>Crash site <span class="geo">34; -118</span></td></tr><tr><td class="infobox-label">Aircraft type</td><td class="infobox-data">DC-7</td></tr><tr><td class="infobox-label">Operator</td><td class="infobox-data">Douglas</td></tr><tr><td class="infobox-label">Aircraft type</td><td class="infobox-data">F-89</td></tr><tr><td class="infobox-label">Operator</td><td class="infobox-data">United States Air Force</td></tr></table>'
         row = article(html, "Test_collision", SOURCE)
         self.assertEqual(len(row["properties"]["aircraft"]), 2)
-        self.assertEqual(row["properties"]["civil_or_military"], "military")
+        self.assertEqual(row["properties"]["civil_or_military"], "civil")
+        self.assertEqual(row["properties"]["participating_categories"], ["civil", "military"])
+        military_list_row = event('Test collision', '1957-01-31', '', SOURCE, category='military')
+        merged = reconcile([row, military_list_row])
+        self.assertEqual(len(merged), 1)
+        self.assertEqual(merged[0]['properties']['civil_or_military'], 'civil')
 
 
 class AircraftSectionTests(unittest.TestCase):
@@ -343,7 +348,13 @@ class AircraftSectionTests(unittest.TestCase):
         self.assertEqual(
             [a["type"] for a in r["properties"]["aircraft"]], ["DC-7", "F-89"]
         )
-        self.assertEqual(r["properties"]["civil_or_military"], "military")
+        self.assertEqual(r["properties"]["civil_or_military"], "civil")
+
+    def test_collision_with_only_military_operators_stays_excluded(self):
+        html = '<table class="infobox"><tr><th>Date</th><td>2000-01-01</td></tr><tr><th>Aircraft type</th><td>Fighter</td></tr><tr><th>Operator</th><td>United States Air Force</td></tr><tr><th>Aircraft type</th><td>Helicopter</td></tr><tr><th>Operator</th><td>United States Army</td></tr></table>'
+        row = article(html, 'Test_collision', SOURCE)
+        self.assertEqual(row['properties']['civil_or_military'], 'military')
+        self.assertEqual(row['properties']['participating_categories'], ['military'])
 
     def test_engine_failure_with_safe_landing_uses_event_site(self):
         html = '<div class="mw-parser-output"><table class="infobox"><tr><th>Date</th><td>2021-02-20</td></tr><tr><th>Summary</th><td>Engine failure caused by metal fatigue</td></tr><tr><th>Fatalities</th><td>0</td></tr><tr><th>Site</th><td>Over Colorado <span class="geo">40; -105</span></td></tr></table><p>The flight suffered an engine failure after takeoff and returned safely to the airport.</p></div>'

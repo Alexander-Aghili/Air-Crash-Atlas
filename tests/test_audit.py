@@ -39,6 +39,12 @@ class SourceEntryAuditTests(unittest.TestCase):
         self.assertEqual([e["date"] for e in entries], ["1950-02", "1950"])
         self.assertTrue(all(e["review_reason"] is None for e in entries))
 
+    def test_year_definition_heading_overrides_decade_for_following_bullets(self):
+        from pipeline.lists import parse_flexible
+        html = '<h2>2020s</h2><dl><dt>2025</dt></dl><ul><li>29 January – A passenger aircraft collided with a military helicopter.</li></ul>'
+        self.assertEqual(enumerate_entries(html, 'List_of_aviation_accidents')[0]['date'], '2025-01-29')
+        self.assertEqual(parse_flexible(html, 'List_of_aviation_accidents', self.source)[0]['properties']['date'], '2025-01-29')
+
     def test_short_definition_dates_are_kept_and_do_not_leak_between_entries(self):
         html = '<h2>1950</h2><dl><dt>5 January</dt><dd>A Navy aircraft crashed at an airfield.</dd><dt>6 January</dt><dd>A second Navy aircraft crashed at another airfield.</dd></dl>'
         entries = enumerate_entries(html, "List_of_aviation_accidents")

@@ -72,6 +72,6 @@ Every publication runs a source-entry audit against its cached source snapshots.
 
 The supplemental parser handles full dates in definition lists, narrative paragraphs, nested loss bullets, date-column aliases, multirow table headings, and inherited table cells. Month-only dates retain month precision. The original source text remains attached through duplicate merging; article operator evidence takes priority over shallow list classification.
 
-Military records are excluded from publication. The source-entry audit labels known military entries as excluded rather than missing. Local module and dataset URLs carry a release version to prevent stale browser assets from using older selection rules.
+Military-only records are excluded from publication. Collisions involving a civilian/commercial operator remain included even when another aircraft is military; operator categories are determined separately for each aircraft from Wikipedia's infobox. The source-entry audit labels known military-only entries as excluded rather than missing. Local module and dataset URLs carry a release version to prevent stale browser assets from using older selection rules.
 
 The 1956 Grand Canyon collision has a user-requested approximate marker at Wikipedia’s crash-site National Historic Landmark coordinate. This represents the crash-site area rather than an exact collision point.

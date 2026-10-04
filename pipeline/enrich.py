@@ -199,6 +199,8 @@ def publish(records, report):
     excluded = [r for r in records if r['properties']['civil_or_military'] == 'military']
     records = [r for r in records if r['properties']['civil_or_military'] == 'civil']
     excluded_ids = sorted(set(report.get('publication_scope', {}).get('excluded_source_entry_ids', [])) | {e['entry_id'] for r in excluded for e in r['properties'].get('source_entries', [])})
+    published_ids = {e['entry_id'] for r in records for e in r['properties'].get('source_entries', [])}
+    excluded_ids = sorted(set(excluded_ids) - published_ids)
     report['publication_scope'] = {'categories': ['civil'], 'excluded_military_records': len(excluded), 'excluded_source_entry_ids': excluded_ids}
     for record in records:
         p = record["properties"]

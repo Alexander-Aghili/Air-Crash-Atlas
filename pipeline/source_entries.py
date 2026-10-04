@@ -130,6 +130,8 @@ def enumerate_entries(html, title):
         if node.find_parent(class_=EXCLUDED):
             continue
         if node.name == 'dt':
+            if re.fullmatch(r'(?:18|19|20)\d{2}', text):
+                year = text
             pending = text
             continue
         if len(text) < 15:
