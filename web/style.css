@@ -21,3 +21,89 @@ main{height:calc(100dvh - 78px);display:grid;grid-template-columns:370px minmax(
 .decade-picker:before{content:'DECADES';display:block;font:8px var(--mono);letter-spacing:.8px;color:var(--muted);margin-bottom:6px}.decade-menu{position:absolute;top:100%;right:0;width:230px;z-index:900;max-height:320px;overflow-y:auto}.sidebar-top:has(#decade-picker[open]):not(:has(#advanced[open])){overflow:visible;max-height:none}.encoding-controls .decade-menu label{font:11px var(--mono);letter-spacing:0;color:var(--ink)}
 .year-color-ramp{height:9px;width:100%;border-radius:2px}.year-color-labels{width:100%;display:flex;justify-content:space-between;font:9px var(--mono)}
 .aviation-toggles{display:flex;gap:18px;flex-wrap:wrap;margin:12px 0}.aviation-toggles .check{display:flex;align-items:center;gap:7px;cursor:pointer}
+
+/* Mobile uses separate map, records, and filter screens. */
+.mobile-navigation{display:none}
+@media(max-width:760px){
+  html,body{height:100%;overflow:hidden}
+  body{display:flex;flex-direction:column}
+  .masthead{height:58px;min-height:58px;padding:0 16px;gap:8px}
+  .wordmark{font-size:24px}
+  .quiet-button{min-height:44px;padding:8px 10px;font-size:11px}
+  .quiet-button>span{display:none}
+  main{flex:1;min-height:0;height:auto;display:flex;flex-direction:column;overflow:hidden}
+  #sidebar{flex-shrink:0;min-height:0;border:0;max-height:none}
+  .sidebar-top{padding:12px 16px 0}
+  .sidebar-top h1,.intro,.catalog-stats,.sidebar-credit{display:none}
+  .archive-tabs,.filters,.aviation-toggles,.encoding-controls,#advanced,.filter-options{display:none}
+  .search-wrap{height:46px;border-radius:8px;background:#fffdf9}
+  .search-wrap input{font-size:16px}
+  .search-wrap kbd{display:none}
+  .results-heading{padding:10px 16px;border-top:0;min-height:38px}
+  .results-heading p{font-size:10px;line-height:1.5}
+  #toggle-results{display:none}
+  #result-scroll{display:none;max-height:none;min-height:0}
+  .map-area{flex:1;height:auto;min-height:0}
+  .mobile-navigation{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:var(--paper);border-top:1px solid var(--line);flex-shrink:0}
+  .mobile-navigation button{min-height:46px;border:0;border-radius:8px;background:transparent;color:var(--muted);font-size:13px;font-weight:600}
+  .mobile-navigation button[aria-pressed=true]{background:var(--navy);color:var(--paper)}
+  body[data-mobile-view=records] #sidebar{flex:1;overflow:hidden}
+  body[data-mobile-view=records] #result-scroll{display:block;flex:1;overflow-y:auto}
+  body[data-mobile-view=records] .archive-tabs{display:flex;margin-bottom:12px}
+  body[data-mobile-view=records] .map-area,body[data-mobile-view=filters] .map-area{display:none}
+  body[data-mobile-view=filters] #sidebar{flex:1;overflow-y:auto;overscroll-behavior:contain}
+  body[data-mobile-view=filters] .sidebar-top{padding-bottom:16px}
+  body[data-mobile-view=filters] .sidebar-top h1{display:block;font-size:32px;margin:4px 0 16px}
+  body[data-mobile-view=filters] .archive-tabs,body[data-mobile-view=filters] .aviation-toggles,body[data-mobile-view=filters] .filter-options{display:flex}
+  body[data-mobile-view=filters] .filters,body[data-mobile-view=filters] .encoding-controls{display:grid}
+  body[data-mobile-view=filters] #advanced{display:block}
+  body[data-mobile-view=filters] .sidebar-credit{display:block}
+  .sidebar-top:has(#decade-picker[open]),.sidebar-top:has(details[open]){max-height:none;overflow:visible}
+  .filters{grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+  .country-filter{grid-column:1/-1}
+  .filters label,.extra-filters label,.encoding-controls label,.decade-picker:before{font-size:10px;letter-spacing:.5px}
+  .filters input,.filters select,.extra-filters input,.extra-filters select,.encoding-controls select{height:46px;font-size:16px;border-radius:6px}
+  .archive-tabs button{min-height:46px;font-size:13px}
+  .aviation-toggles{gap:12px}
+  .aviation-toggles .check{flex:1;min-height:46px;padding:10px;border:1px solid var(--line);border-radius:6px;font-size:13px;color:var(--ink)}
+  .check{font-size:13px;min-height:44px}
+  .check input{width:18px;height:18px}
+  .text-button,#advanced>summary,.decade-actions button{font-size:13px;min-height:44px}
+  .decade-picker>summary{height:46px;font-size:13px;border-radius:6px}
+  .decade-menu{position:static;width:100%;max-height:260px;padding:8px}
+  #decade-options{grid-template-columns:1fr}
+  #decade-options label{min-height:44px}
+  .encoding-controls:has(#decade-picker[open]){grid-template-columns:1fr}
+  .extra-filters{gap:16px}
+  #results li{padding:18px 16px}
+  .record-title{font-size:15px;min-height:44px}
+  .record-footer a,.record-footer button{font-size:11px;min-height:44px;display:inline-flex;align-items:center}
+  .record-footer{gap:16px;margin-top:4px}
+  .result-meta{font-size:12px}
+  #more{min-height:46px;font-size:13px}
+  .map-top{top:12px;left:12px;right:12px}
+  .layer-switch{border-radius:8px;padding:3px}
+  .layer-switch button{min-height:40px;padding:8px 13px;font-size:12px;border-radius:5px}
+  .map-right-tools{top:66px;right:12px;gap:6px}
+  .map-right-tools select,.map-right-tools button{height:44px;font-size:12px;border-radius:6px;max-width:180px}
+  .map-right-tools button{font-size:23px;width:44px}
+  .map-bottom{bottom:24px;left:12px;right:68px}
+  .appearance-legend{max-width:280px;border-radius:8px;padding:8px 10px;font-size:9px}
+  .appearance-legend>small{display:none}
+  .leaflet-control-zoom{margin:0 12px 28px 0!important}
+  .leaflet-control-zoom a{width:42px!important;height:42px!important;line-height:42px!important}
+  #map-error{top:120px;left:12px;right:12px;font-size:12px}
+  #detail-dialog{top:8px;bottom:8px;height:calc(100dvh - 16px);border-radius:12px;z-index:1600}
+  .close-dialog{width:44px;height:44px;border-radius:8px}
+  .detail-inner{padding:20px}
+  .detail-summary{font-size:14px}
+  .detail-actions a,.detail-actions button{min-height:44px;font-size:13px}
+  .detail-facts{gap:16px;overflow-wrap:anywhere}
+  #about-dialog{border-radius:12px;width:calc(100% - 24px);max-height:calc(100dvh - 24px)}
+}
+@media(max-width:760px) and (max-height:500px){
+  .masthead{height:48px;min-height:48px}.sidebar-top{padding-top:8px}
+  .mobile-navigation{padding-top:4px;padding-bottom:calc(4px + env(safe-area-inset-bottom))}
+  .mobile-navigation button{min-height:40px}.appearance-legend{max-width:340px}
+  .map-right-tools{top:12px;left:12px;right:auto}.map-bottom{bottom:20px}
+}

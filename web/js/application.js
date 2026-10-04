@@ -91,7 +91,14 @@ export class CrashApplication {
     if(!$('detail-dialog').open)$('detail-dialog').show();$('close-detail').focus();
   }
   closeDetail(){ $('detail-dialog').close();this.selected=null;this.saveState();this.results.render();$('search').focus(); }
+  setMobileView(view){
+    document.body.dataset.mobileView=view;
+    for(const name of ['map','records','filters'])$('mobile-'+name).setAttribute('aria-pressed',String(name===view));
+    $('result-scroll').hidden=false;
+    requestAnimationFrame(()=>this.mapView.map?.invalidateSize({pan:false}));
+  }
   bindPageControls(){
+    for(const view of ['map','records','filters'])$('mobile-'+view).onclick=()=>this.setMobileView(view);
     $('about').onclick=()=>$('about-dialog').showModal();$('close-about').onclick=()=>$('about-dialog').close();$('close-detail').onclick=()=>this.closeDetail();$('dismiss-error').onclick=()=>{$('map-error').hidden=true;};
     $('toggle-results').onclick=()=>{const expanded=$('toggle-results').getAttribute('aria-expanded')==='true';$('toggle-results').setAttribute('aria-expanded',String(!expanded));$('toggle-results').textContent=expanded?'Show list':'Hide list';$('result-scroll').hidden=expanded;};
     document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('detail-dialog').open)this.closeDetail();if(e.key==='/'&&!['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)&&!$('about-dialog').open&&!$('detail-dialog').open){e.preventDefault();$('search').focus();}});

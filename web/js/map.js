@@ -35,6 +35,11 @@ export class CrashMap {
   }
   locate(f) {
     if (!this.map) return;
+    if(matchMedia('(max-width:760px)').matches){
+      this.app.setMobileView('map');
+      if($('detail-dialog').open)this.app.closeDetail();
+      this.map.invalidateSize({pan:false});
+    }
     this.app.selected = f.id;
     const m = this.markers.get(f.id)?.[0];
     if (!m) return;

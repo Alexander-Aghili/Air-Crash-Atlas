@@ -4,10 +4,11 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#152633">
 <meta name="description" content="A map of plane crashes with Wikipedia links, images, and source information.">
 <title>Aviation Crash Atlas</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"><link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"><link rel="stylesheet" href="style.css">
 <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script defer src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script><script type="module" src="app.js"></script>
 </head>
-<body>
+<body data-mobile-view="map">
 <a class="skip-link" href="#search">Skip to search</a>
 <header class="masthead">
 <a href="./" class="brand" aria-label="Aviation Crash Atlas home"><span class="wordmark">Aviation Crash Atlas</span></a>
@@ -51,6 +52,11 @@
 <div class="map-bottom"><div class="legend appearance-legend"><strong id="color-key-title">Fatalities</strong><div id="color-key" class="color-key"></div><small>Clusters show site counts.</small></div><div id="map-location" aria-hidden="true" hidden>20.00° N / 0.00° E</div></div>
 </section>
 </main>
+<nav class="mobile-navigation" aria-label="Explore the atlas">
+<button id="mobile-map" type="button" aria-pressed="true" aria-controls="map">Map</button>
+<button id="mobile-records" type="button" aria-pressed="false" aria-controls="result-scroll">Records</button>
+<button id="mobile-filters" type="button" aria-pressed="false" aria-controls="sidebar">Filters</button>
+</nav>
 <dialog id="detail-dialog" aria-label="Crash record"><button id="close-detail" class="close-dialog" aria-label="Close crash record">×</button><div id="detail-content"></div></dialog>
 <dialog id="about-dialog" aria-labelledby="about-title"><button id="close-about" class="close-dialog" aria-label="Close about">×</button><h2 id="about-title">About this map</h2><p>I collect plane crash records from Wikipedia and link to their articles and available images.</p><h3>Why some records have markers</h3><p>A marker requires coordinates for the crash site. I use an accident article’s Site field. Nearby towns, departure airports, memorials, and last-known positions are not used as substitutes. Dashed marker outlines indicate approximate crash sites.</p><p>Records without crash-site coordinates are available in All records. Incidents and disappearances may have no crash site to map. The dataset is incomplete, especially for military crashes and older records.</p><p>Use custom years and the decade dropdown together to filter dates. Marker color can show fatalities, year, or a single color. Unrecorded or ambiguous fatality counts are gray; colors use the event’s reported total, not a separate count for each aircraft.</p><p id="coverage"></p><p>Images may show the aircraft, crash site, or aftermath. Their file pages provide credits and licenses. Wikipedia text is reused under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>.</p><p><a href="https://github.com/wiedehopf/tar1090" target="_blank" rel="noopener noreferrer">Aircraft icon credits</a> · <a href="vendor/tar1090-LICENSE.txt" target="_blank" rel="noopener noreferrer">Icon license</a></p><p><a href="data/audit.html" target="_blank" rel="noopener noreferrer">Source-entry audit ↗</a> · <a href="data/coverage.json" target="_blank" rel="noopener noreferrer">Data coverage report ↗</a></p></dialog>
 </body>
