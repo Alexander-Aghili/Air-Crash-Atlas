@@ -1,5 +1,5 @@
-import { $, num, link, node, imageURL, siteLabel } from './dom.js';
-import { PAGE_SIZE } from './constants.js';
+import { $, num, link, node, imageURL, siteLabel } from './dom.js?v=20261004-civil';
+import { PAGE_SIZE } from './constants.js?v=20261004-civil';
 export class ResultsView {
   constructor(app){this.app=app;}
   render(){

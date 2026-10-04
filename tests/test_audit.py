@@ -89,7 +89,7 @@ class SourceEntryAuditTests(unittest.TestCase):
         record = event('Test', '1964-08-29', '29 August 1964: a plane crashed.', {'url': URL(SEEDS[0]), 'revision': 1})
         report = audit([record], FixtureFetcher())
         self.assertEqual(report['summary']['matched'], 1)
-        self.assertEqual(report['summary']['missing'], 3)
+        self.assertEqual(report['summary']['missing'], 2 * len(SEEDS) - 1)
         self.assertEqual(report['summary']['matched_entries_without_coordinates'], 1)
 
     def test_related_accident_links_do_not_merge_distinct_events(self):

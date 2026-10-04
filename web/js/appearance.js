@@ -1,4 +1,4 @@
-import symbols from '../vendor/aircraft-symbols.js';
+import symbols from '../vendor/aircraft-symbols.js?v=20261004-civil';
 
 // Match named models to ICAO designators, then use tar1090's own icon mapping.
 // Family matches are visual approximations, not historical ADS-B broadcasts.

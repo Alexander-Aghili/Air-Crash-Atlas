@@ -10,7 +10,9 @@ from pipeline.extract import ROOT, SEEDS, URL, STAMP, Fetcher, is_accident_list
 from pipeline.source_entries import enumerate_entries
 
 
-def audit(records, fetcher, enrichment=None):
+def audit(records, fetcher, enrichment=None, excluded_records=(), excluded_entry_ids=()):
+    excluded_entries = {e["entry_id"] for r in excluded_records for e in r["properties"].get("source_entries", [])}
+    excluded_entries.update(excluded_entry_ids)
     by_entry = defaultdict(list)
     article_dates = defaultdict(set)
     for record in records:
@@ -37,7 +39,7 @@ def audit(records, fetcher, enrichment=None):
             continue
         soup = BeautifulSoup(data['html'], 'lxml')
         content = soup.select_one('.mw-parser-output') or soup
-        # The audit independently walks the graph from the two roots.
+        # The audit independently walks the graph from the configured roots.
         child_lists = set()
         for link in content.select('a[href^="/wiki/"]'):
             linked = unquote(link['href'][6:]).split('#')[0]
@@ -86,6 +88,9 @@ def audit(records, fetcher, enrichment=None):
                     entry['reason'] = candidate['review_reason'] + '; published record exists but this entry is not certified'
                 if not entry['mapped']:
                     entry['location_reasons'] = sorted({r['properties'].get('evidence', {}).get('method', 'No crash-site coordinates') for r in matched})
+            elif candidate['entry_id'] in excluded_entries:
+                entry['status'] = 'excluded'
+                entry['reason'] = 'Military record excluded from commercial/civil publication scope'
             else:
                 entry['status'] = 'needs_review' if candidate['review_reason'] else 'missing'
                 entry['reason'] = candidate['review_reason'] or 'Source entry has no exact provenance link to a published record'
@@ -102,7 +107,7 @@ def audit(records, fetcher, enrichment=None):
     unmatched_pages = [p for p in pages if p['status'] == 'unavailable' or (p.get('entries') == 0 and p['status'] != 'index' and 'canonical_title' not in p)]
     linked_ids = {eid for entry in entries if entry['status'] == 'matched' for eid in entry['event_ids']}
     return {'generated_at': STAMP(), 'roots': [URL(t) for t in SEEDS],
-            'scope': 'Dated and event-like entries in recursively linked aviation lists from the two roots, at the recorded Wikipedia revisions. Candidate scanning is conservative, not a claim that every possible prose layout is understood.',
+            'scope': 'Dated and event-like entries in recursively linked aviation lists from the configured commercial discovery root, at the recorded Wikipedia revisions. Candidate scanning is conservative, not a claim that every possible prose layout is understood.',
             'coverage_complete': False,
             'article_enrichment': enrichment or {},
             'summary': {'article_enrichment_failures': len((enrichment or {}).get('failures', {})), 'source_pages': len(pages), 'unavailable_pages': sum(p['status'] == 'unavailable' for p in pages), 'pages_requiring_review': len(unmatched_pages), 'candidate_entries': len(entries), 'entries_with_published_record': sum(bool(e.get('event_ids')) for e in entries), 'entries_without_published_record': sum(not e.get('event_ids') for e in entries), **dict(totals), 'matched_entries_without_article_enrichment': sum(e['status'] == 'matched' and not e['article_enriched'] for e in entries), 'matched_entries_without_coordinates': sum(e['status'] == 'matched' and not e['mapped'] for e in entries), 'unique_records_linked_to_entries': len(linked_ids), 'published_records': len(records), 'published_records_without_entry_link_in_audited_scope': len(records) - len(linked_ids)},
@@ -129,7 +134,7 @@ def main(argv=None):
     records = json.loads((ROOT / 'web/data/events.geojson').read_text())['features']
     coverage_path = ROOT / 'web/data/coverage.json'
     coverage = json.loads(coverage_path.read_text()) if coverage_path.exists() else {}
-    report = audit(records, Fetcher(args.offline, args.refresh), coverage.get('enrichment'))
+    report = audit(records, Fetcher(args.offline, args.refresh), coverage.get('enrichment'), excluded_entry_ids=coverage.get('publication_scope', {}).get('excluded_source_entry_ids', []))
     if args.repair:
         from pipeline.source_entries import parse_unusual
         from pipeline.extract import reconcile
@@ -152,7 +157,7 @@ def main(argv=None):
                 props = by_id[event_id]['properties']
                 props['date'] = most_precise
                 props['date_precision'] = 'day' if len(most_precise) == 10 else 'month' if len(most_precise) == 7 else 'year'
-        consumed = {entry['entry_id'] for record in records for entry in record['properties'].get('source_entries', [])}
+        consumed = {entry['entry_id'] for record in records for entry in record['properties'].get('source_entries', [])} | set(coverage.get('publication_scope', {}).get('excluded_source_entry_ids', []))
         for page in report['pages']:
             if page['status'] == 'unavailable':
                 continue

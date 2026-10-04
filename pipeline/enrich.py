@@ -180,6 +180,10 @@ def titles_from_records(records):
 
 
 def publish(records, report):
+    excluded = [r for r in records if r['properties']['civil_or_military'] == 'military']
+    records = [r for r in records if r['properties']['civil_or_military'] == 'civil']
+    excluded_ids = sorted(set(report.get('publication_scope', {}).get('excluded_source_entry_ids', [])) | {e['entry_id'] for r in excluded for e in r['properties'].get('source_entries', [])})
+    report['publication_scope'] = {'categories': ['civil'], 'excluded_military_records': len(excluded), 'excluded_source_entry_ids': excluded_ids}
     for record in records:
         p = record["properties"]
         if re.search(
@@ -192,7 +196,7 @@ def publish(records, report):
                 p["location_kind"] = "event site"
     validate(records)
     from pipeline.audit import audit, write_report
-    entry_audit = audit(records, Fetcher(offline=True), report.get("enrichment"))
+    entry_audit = audit(records, Fetcher(offline=True), report.get("enrichment"), excluded_records=excluded, excluded_entry_ids=excluded_ids)
     write_report(entry_audit, ROOT / "web/data")
     report["source_entry_audit"] = entry_audit["summary"]
     mapped = [r for r in records if r["geometry"]]

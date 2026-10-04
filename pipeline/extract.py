@@ -10,7 +10,6 @@ from bs4 import BeautifulSoup
 ROOT = Path(__file__).resolve().parents[1]
 INDEX = "List_of_accidents_and_incidents_involving_military_aircraft"
 SEEDS = [
-    INDEX,
     "List_of_accidents_and_incidents_involving_commercial_aircraft",
 ]
 
@@ -18,7 +17,7 @@ SEEDS = [
 def is_accident_list(title):
     """Select aviation lists, including aircraft-model and air-show sublists."""
     lower = title.lower()
-    return title.startswith("List_") and bool(
+    return title.startswith("List_") and "military" not in lower and bool(
         re.search(r"accident|incident|crash|losses|shootdown", lower)
         and re.search(r"aircraft|airliner|airline|aviation|flight|helicopter|aerial|air_show|air_force|military|boeing|airbus|douglas|lockheed|harrier|lightning|(?:^|_)[fbc]-\d", lower)
     )
